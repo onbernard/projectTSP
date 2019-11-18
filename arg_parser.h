@@ -19,6 +19,7 @@ typedef struct args{
     unsigned int ga_nSpecimens;
     unsigned int ga_nGenerations;
     double ga_mutationRate;
+    _Bool nz;
 } args_t;
 
 void init_args_t(args_t *a);

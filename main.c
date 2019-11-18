@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "globals.h"
 #include "res.h"
@@ -22,7 +23,7 @@ Usage :  ./tsp -f <file> [-t <tour>] [-v [<file>]] -<méthode> [-h]
 -ga <nombre d'individus> <nombre de générations> <taux de mutation> :
 algorithme génétique, défaut = 20 individus, 200 générations, 0.3 mutation.
 */
-
+/*
 char *TSPfileName = NULL;
 char *TOURfileName = NULL;
 _Bool verbose = 0;
@@ -39,10 +40,17 @@ _Bool ga = 0;
 int ga_nSpecimens = 20;
 int ga_nGnerations = 200;
 double ga_mutationRate = 0.3;
+*/
 
-int parseArguments(int argc, char **argv){
+_// 1 if verbose mode is on, 0 if off. Default is 0
+extern _Bool verbose;
 
-}
+// points to log file. Default is stdout
+extern FILE logFile;
+
+// 1 if a TOUR file has been given
+extern _Bool TOURflag;
+
 
 int main(int argc, char **argv){
     
