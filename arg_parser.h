@@ -11,7 +11,7 @@
 #define GA 0b100000
 
 
-typedef struct args{
+typedef struct args_s{
     char TSPfileName[MAXNAMELENGTH];
     char TOURfileName[MAXNAMELENGTH];
     char logfileName[MAXNAMELENGTH];

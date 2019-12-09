@@ -3,6 +3,8 @@
 
 #define MAXNAMELENGTH 32
 
+
+
 //--------------- CONTEXT VARIABLES --------------------------
 
 // 1 if verbose mode is on, 0 if off. Default is 0

@@ -53,9 +53,16 @@ extern _Bool TOURflag;
 
 
 int main(int argc, char **argv){
-    
-
-    if( parseArguments(int argc, char **argv) < 0 ){
-
+    args_t parsedArgs;
+    int err;
+    err = parseArguments(argc, argv, &parsedArgs);
+    if( err < 0 ){
+        fprintf(stderr, "ERROR : in main : parseARguments error");
+        return -1;
     }
+    else if( err == 0 ){
+        printf("%s\n", help);
+    }
+
+    FILE *fp = 
 }

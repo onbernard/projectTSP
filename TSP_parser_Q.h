@@ -1,15 +1,15 @@
-#ifndef _TSP_LOADER_H
-#define _TSP_LOADER_H
+#ifndef _TSP_PARSER_Q_H
+#define _TSP_PARSER_Q_H
 
-#include "globals.h"
+#include <stdio.h>
 
 // USED IN READKEYWORD AS RETURN VALUES
 #define NAME_F 0b1
 #define TYPE_F 0b10
 #define DIMENSION_F 0b100
 #define EDGE_WEIGHT_TYPE_F 0b1000
-#define COMMENT_F 0b10000
-#define EOF_REACHED_F 0b100000
+#define COMMENT_F 0
+#define EOF_REACHED_F -1
 #define NODE_COORD_SECTION_F 0b1000000
 
 // USED IN READTYPE AS RETURN VALUES
@@ -46,27 +46,8 @@ typedef struct instance_s {
    int *tabTour; // ARRAY OF CITIES IN TOUR (dans l'ordre) (calcul)
 } instance_t;
 
-
-// return 0 if something other than a letter or _ is read
-// NAME_F name, TYPE_F type, DIMENSION_F dimension
-// EDGE_WEIGHT_TYPE_F edge_weight_type, COMMENT comment
-// EOF_REACHED_F eof
-unsigned char readSpecKeyword(FILE *fp);
-
-// read characters from fp until either 'eof', '\n' or ':' is reached
-// return 0 if 'eof' or '\n' reached
-// 1 if ':' reached
-int readSeparator(FILE *fp);
-
-// read characters from fp until eof, '\n' or MAXNAMELENGTH -1 characters is read
-// return 1 if a name is read and '\n' is encoutered
-// 0 if '\n' is encountered but no characters has been read
-// 0 if eof is reached or if MAXNAMELENGTH -1 has been read
-int readName(FILE *fp, char buffer[]);
-
-// read from fp
-// return 0 if more than 4 characters are read
-// return 0 if eof 
-int readType(FILE *fp);
+void tokenize(FILE *fp);
+void trim(char buffer[]);
+int specKeyword(const char str[]);
 
 #endif

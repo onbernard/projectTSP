@@ -3,23 +3,34 @@
 #include <string.h>
 #include <limits.h>
 
-void print_bin(unsigned char byte)
-{
-    int i = CHAR_BIT; /* however many bits are in a byte on your platform */
-    while(i--) {
-        putchar('0' + ((byte >> i) & 1)); /* loop through and print the bits */
-    }
-}
+
 
 
 int main(int argc, char **argv){
-    char c1 = (char) 0;
-    char c2 = '\0';
-    print_bin(c1);
-    printf("\n");
-    print_bin(c2);
-    printf("\n");
-    c1 += 0b101;
-    print_bin(c1);
-    printf("\n");
+
+    FILE *fp = fopen("test.txt", "r");
+    if(fp == NULL){
+        return -1;
+    }
+
+    int i = 0;
+    char c;
+    while(i<4){
+        c = fgetc(fp);
+        printf("%c", c);
+        i++;
+    }
+    if( fseek(fp, -4, SEEK_CUR) != 0 ){
+        fclose(fp);
+        return -1;
+    }
+    i = 0;
+    while(i<4){
+        c = fgetc(fp);
+        printf("%c", c);
+        i++;
+    }
+    fclose(fp);
+
+    return 0;
 }
