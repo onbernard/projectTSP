@@ -3,34 +3,56 @@
 #include <string.h>
 #include <limits.h>
 
+int colonDivide(char str[]){
+    int i = 0;
+    while(str[i] != ':' && str[i] != 0 ){
+        i++;
+    }
+    if(str[i] == 0){
+        return -1;
+    }
+    str[i] = 0;
+    return i+1;
+}
 
+void trim(char str[]){
+    int i = 0;
+    while(str[i] == ' ' && str[i] != 0){
+        i++;
+    }
+    int n = 0;
+    while(str[n] != 0){
+        n++;
+    }
+    int j = n;
+    while( j >= 0 && (str[j] == 0 || str[j] == ' ') ){
+        j--;
+    }
+    int foo = 0;
+    while(i <= j){
+        str[foo] = str[i];
+        foo++; i++;
+    }
+    while(foo<n){
+        str[foo] = 0;
+        foo++;
+    }
+}
 
 
 int main(int argc, char **argv){
-
-    FILE *fp = fopen("test.txt", "r");
-    if(fp == NULL){
-        return -1;
+    char str[] = ":";
+    printf("#%s#\n", str);
+    int sep = colonDivide(str);
+    if(sep < 0){
+        printf("STOP\n");
+        return 1;
     }
-
-    int i = 0;
-    char c;
-    while(i<4){
-        c = fgetc(fp);
-        printf("%c", c);
-        i++;
-    }
-    if( fseek(fp, -4, SEEK_CUR) != 0 ){
-        fclose(fp);
-        return -1;
-    }
-    i = 0;
-    while(i<4){
-        c = fgetc(fp);
-        printf("%c", c);
-        i++;
-    }
-    fclose(fp);
-
+    printf("#%s#\n", str);
+    trim(str);
+    printf("#%s#\n", str);
+    printf("#%s#\n", str + sep);
+    trim(str+sep);
+    printf("#%s#\n", str + sep);
     return 0;
 }

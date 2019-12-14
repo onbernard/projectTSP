@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "error.h"
 
 static node_t *head = NULL;
 static node_t *tail = NULL;
@@ -16,7 +15,7 @@ _Bool is_empty_Q(){
 int push_Q(void *data){
     if(head == NULL){ // INIT QUEUE
         if( (head = (node_t *) malloc(sizeof(node_t)) ) == NULL ){
-            error();
+            fprintf(stderr, "ERROR in push\n");
             return -1;
         }
         tail = head;
@@ -24,7 +23,7 @@ int push_Q(void *data){
     }
     else{
         if( (tail->next = (node_t *) malloc(sizeof(node_t))) == NULL ){
-            error();
+            fprintf(stderr, "ERROR in push\n");
             return -1;
         }
         tail = tail->next;

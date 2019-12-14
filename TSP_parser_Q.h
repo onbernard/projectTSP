@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+#define MAXNAMELENGTH 32
+
 // USED IN READKEYWORD AS RETURN VALUES
 #define NAME_F 0b1
 #define TYPE_F 0b10
@@ -10,7 +12,7 @@
 #define EDGE_WEIGHT_TYPE_F 0b1000
 #define COMMENT_F 0
 #define EOF_REACHED_F -1
-#define NODE_COORD_SECTION_F 0b1000000
+#define NODE_COORD_SECTION_F 0b10000
 
 // USED IN READTYPE AS RETURN VALUES
 #define TSP_F 1
@@ -46,8 +48,21 @@ typedef struct instance_s {
    int *tabTour; // ARRAY OF CITIES IN TOUR (dans l'ordre) (calcul)
 } instance_t;
 
-void tokenize(FILE *fp);
-void trim(char buffer[]);
+int parseFile(FILE *fp, instance_t *instance);
+int parseData(instance_t *instace);
+int parseDataLine(char line[], int *nLineBuff, double *xBuff, double *yBuff);
+int spaceDivide(char str[]);
+
+int parseSpecs(instance_t *instance);
+int readName(char dest[], char src[]);
+int readType(char dest[], char src[]);
+int readDimension(char src[]);
+int readEdgeType(char dest[], char src[]);
+int readComment(char comment[]);
+int colonDivide(char str[]);
+
+int tokenize(FILE *fp);
+void trim(char str[]);
 int specKeyword(const char str[]);
 
 #endif
