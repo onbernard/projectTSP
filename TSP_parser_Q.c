@@ -25,6 +25,19 @@ int main(int argc, char **argv){
         fprintf(stderr, "ERROR in main\n");
         return -1;
     }
+
+    printf("\n\n-----INSTANCE-----\n");
+    printf("Name: %s\n", instance.name);
+    printf("Type: %s\n", instance.type);
+    printf("Dimension: %d\n", instance.dimension);
+    printf("Edge type: %s\n", instance.edge_type);
+    printf("Length: %lf\n", instance.length);
+    printf("tabCoord: \n");
+    for(int i=0; i<instance.dimension; i++){
+        printf("%d %d %d\n", i+1, instance.tabCoord[i][0], instance.tabCoord[i][1]);
+    }
+    printf("DONE\n");
+
     return 0;
 }
 
@@ -53,14 +66,14 @@ int parseFile(FILE *fp, instance_t *instance){
     for(int i=0; i<instance->dimension; i++){
         instance->tabCoord[i] = (int *) malloc( 2 * sizeof(int) );
         if(instance->tabCoord[i] == NULL){
-            fprintf(stderr, "ERROR : in parseFile : error while allocating tabCoord[%d]", i);
+            fprintf(stderr, "ERROR : in parseFile : error while allocating tabCoord[%d]\n", i);
             return -1;
         }
     }
 
     err = parseData(instance);
     if(err < 0){
-        fprintf(stderr, "ERROR : in parseFile : error in parseData");
+        fprintf(stderr, "ERROR : in parseFile : error in parseData\n");
         return -1;
     }
 
@@ -117,7 +130,7 @@ int parseData(instance_t *instance){
             return -1;
         }
 
-        int err = parseDataLine(pop_Q(), &nLine, &x, &y); // PARSE
+        int err = parseDataLine(buffer, &nLine, &x, &y); // PARSE
 
         if(err < 0){
             fprintf(stderr, "ERROR : in parseData : error in parseDataLine\n");
@@ -143,8 +156,10 @@ int parseDataLine(char line[], int *nLineBuff, double *xBuff, double *yBuff){
         fprintf(stderr, "ERROR : in parseDataLine : null buffer\n");
         return -2;
     }
+    printf("%s\n", line);
     int firstSep = spaceDivide(line);
-    if(firstSep != 2){
+    printf("%d\n", firstSep);
+    if(firstSep < 2){
         fprintf(stderr, "ERROR : in parseDataLine : length of first argument not correct\n");
         return -2;
     }
@@ -202,7 +217,9 @@ int spaceDivide(char str[]){
 int parseSpecs(instance_t *instance){
     char *buffer;
     int specs = 0b0;
-    while( ((buffer=pop_Q()) != NULL) && specs != 0b1111 ){ // #  ***  :  ******  0#
+    while( specs != 0b1111 && ((buffer=pop_Q()) != NULL) ){ // #  ***  :  ******  0#
+        printf("%s\n", buffer);
+
         int separator = colonDivide(buffer); // #  ***  0  ******  0#
         if(separator < 0){
             fprintf(stderr, "ERROR : in parseSpecs : expected ':' but did not find any\n");
@@ -210,6 +227,9 @@ int parseSpecs(instance_t *instance){
         }
         trim(buffer); // #***0  ******  0#
         int keyword = specKeyword(buffer);
+
+        printf("%s\n", buffer);
+        printf("%s\n", buffer+separator);
         if(keyword < 0){
             fprintf(stderr, "ERROR : in parseSpecs : %s does not match any keyword\n", buffer);
             return -1;
@@ -254,6 +274,7 @@ int parseSpecs(instance_t *instance){
                     return -1;
                 }
                 specs += EDGE_WEIGHT_TYPE_F;
+                break;
             case COMMENT_F:
                 readComment(buffer+separator);
                 break;
@@ -418,6 +439,9 @@ int specKeyword(const char str[]){
     }
     else if( strcmp(str, "COMMENT")==0 ){
         return COMMENT_F;
+    }
+    else if( strcmp(str, "NODE_COORD_SECTION")==0 ){
+        return NODE_COORD_SECTION_F;
     }
     else{
         return -1;
