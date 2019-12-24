@@ -5,7 +5,7 @@
 #include <string.h>
 
 #include "basic_Q.h"
-
+/*
 int main(int argc, char **argv){
     FILE *fp = fopen("test.TSP", "r");
     if(fp == NULL){
@@ -40,7 +40,7 @@ int main(int argc, char **argv){
 
     return 0;
 }
-
+*/
 
 int parseFile(FILE *fp, instance_t *instance){
     int err;
@@ -156,9 +156,9 @@ int parseDataLine(char line[], int *nLineBuff, double *xBuff, double *yBuff){
         fprintf(stderr, "ERROR : in parseDataLine : null buffer\n");
         return -2;
     }
-    printf("%s\n", line);
+    //printf("%s\n", line);
     int firstSep = spaceDivide(line);
-    printf("%d\n", firstSep);
+    //printf("%d\n", firstSep);
     if(firstSep < 2){
         fprintf(stderr, "ERROR : in parseDataLine : length of first argument not correct\n");
         return -2;
@@ -218,7 +218,7 @@ int parseSpecs(instance_t *instance){
     char *buffer;
     int specs = 0b0;
     while( specs != 0b1111 && ((buffer=pop_Q()) != NULL) ){ // #  ***  :  ******  0#
-        printf("%s\n", buffer);
+        //printf("%s\n", buffer);
 
         int separator = colonDivide(buffer); // #  ***  0  ******  0#
         if(separator < 0){
@@ -228,8 +228,8 @@ int parseSpecs(instance_t *instance){
         trim(buffer); // #***0  ******  0#
         int keyword = specKeyword(buffer);
 
-        printf("%s\n", buffer);
-        printf("%s\n", buffer+separator);
+        //printf("%s\n", buffer);
+        //printf("%s\n", buffer+separator);
         if(keyword < 0){
             fprintf(stderr, "ERROR : in parseSpecs : %s does not match any keyword\n", buffer);
             return -1;
@@ -336,7 +336,7 @@ int readEdgeType(char dest[], char src[]){
 }
 
 int readComment(char comment[]){
-    printf("%s\n", comment);
+    //printf("%s\n", comment);
     return 0;
 }
 

@@ -4,6 +4,9 @@
 
 #include "globals.h"
 #include "res.h"
+#include "TSP_parser_Q.h"
+#include "arg_parser.h"
+#include "brute_force.h"
 
 /*
 Usage :  ./tsp -f <file> [-t <tour>] [-v [<file>]] -<méthode> [-h]
@@ -38,12 +41,14 @@ _Bool rw = 0;
 _Bool twoOpt = 0;
 _Bool ga = 0;
 int ga_nSpecimens = 20;
-int ga_nGnerations = 200;
+int ga_nGenerations = 200;
 double ga_mutationRate = 0.3;
 */
 
-_// 1 if verbose mode is on, 0 if off. Default is 0
-extern _Bool verbose;
+_Bool nz = 0;
+
+// 1 if verbose mode is on, 0 if off. Default is 0
+_Bool verbose = 0;
 
 // points to log file. Default is stdout
 extern FILE logFile;
@@ -54,15 +59,90 @@ extern _Bool TOURflag;
 
 int main(int argc, char **argv){
     args_t parsedArgs;
+    memset( &(parsedArgs.TSPfileName), 0, MAXNAMELENGTH * sizeof(char) );
+    memset( &(parsedArgs.TOURfileName), 0, MAXNAMELENGTH * sizeof(char) );
+    memset( &(parsedArgs.logfileName), 0, MAXNAMELENGTH * sizeof(char) );
+    parsedArgs.ga_nSpecimens = 20;
+    parsedArgs.ga_nGenerations = 200;
+    parsedArgs.ga_mutationRate = 0.3;
+
+
     int err;
     err = parseArguments(argc, argv, &parsedArgs);
     if( err < 0 ){
-        fprintf(stderr, "ERROR : in main : parseARguments error");
+        fprintf(stderr, "ERROR : in main : parseArguments error\n");
         return -1;
     }
     else if( err == 0 ){
-        printf("%s\n", help);
+        printf("%s\n", HELP);
     }
 
-    FILE *fp = 
+    print_args(parsedArgs);
+
+
+    FILE *fp = fopen("test.TSP", "r");
+    if(fp == NULL){
+        fprintf(stderr, "fopen failed\n");
+        return -1;
+    }
+
+    instance_t instance;
+    memset(instance.name, 0, MAXNAMELENGTH * sizeof(char));
+    memset(instance.type, 0, MAXNAMELENGTH * sizeof(char));
+    memset(instance.edge_type, 0, MAXNAMELENGTH * sizeof(char));
+    instance.dimension = 0;
+    instance.length = 0;
+
+    err = parseFile(fp, &instance);
+    if(err < 0){
+        fprintf(stderr, "ERROR in main\n");
+        return -1;
+    }
+
+    printf("\n\n-----INSTANCE-----\n");
+    printf("Name: %s\n", instance.name);
+    printf("Type: %s\n", instance.type);
+    printf("Dimension: %d\n", instance.dimension);
+    printf("Edge type: %s\n", instance.edge_type);
+    printf("Length: %lf\n", instance.length);
+    printf("tabCoord: \n");
+    for(int i=0; i<instance.dimension; i++){
+        printf("%d %d %d\n", i+1, instance.tabCoord[i][0], instance.tabCoord[i][1]);
+    }
+    printf("----------------------\n");
+
+    instance.matDist = (double **) malloc(instance.dimension * sizeof(double *));
+    if(instance.matDist == NULL){
+        fprintf(stderr, "ERROR : in main : error while allocating matDist\n");
+        exit(-1);
+    }
+    for(int i=0; i<instance.dimension; i++){
+        instance.matDist[i] = (double *) malloc(instance.dimension * sizeof(double));
+        if(instance.matDist[i] == NULL){
+            fprintf(stderr, "ERROR : in main : error while allocating matDist");
+            exit(-1);
+        }
+    }
+
+    int *tourBuffer = (int *) malloc(instance.dimension * sizeof(int));
+    if(tourBuffer == NULL){
+        fprintf(stderr, "ERROR : in main : error while allocating tourBuffer\n");
+        exit(-1);
+    }
+
+    fillMatDist(instance.matDist, instance.tabCoord, instance.dimension);
+
+    bruteForce(&instance, tourBuffer);
+
+    printf("Brute force:\n\n");
+    for(int i=0; i<instance.dimension; i++){
+        printf("%d ", tourBuffer[i]);
+    }
+    printf("\n\nBrute force avec matrice: \n\n");
+    bruteForceMatrix(&instance, tourBuffer);
+    for(int i=0; i<instance.dimension; i++){
+        printf("%d ", tourBuffer[i]);
+    }
+    printf("\n");
+    return 0;
 }

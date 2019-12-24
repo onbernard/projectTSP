@@ -5,6 +5,7 @@
 
 #include "globals.h"
 
+
 void init_args_t(args_t *a){
     a->TSPfileName[0] = '\0';
     a->TOURfileName[0] = '\0';
@@ -15,9 +16,10 @@ void init_args_t(args_t *a){
     a->ga_mutationRate = 0.3;
 }
 
-void print_args_t(args_t a){
+void print_args(args_t a){
     printf("TSP file name: %s\nTOUR file name: %s\nlog file name: %s\n", a.TSPfileName, a.TOURfileName, a.logfileName);
     printf("verbose mode: %d\n", verbose);
+    printf("NZ mode: %d\n", nz);
     printf("BF: %d\n", (a.solvingMethods & BF) != 0);
     printf("BFM: %d\n", (a.solvingMethods & BFM) != 0 );
     printf("PPV: %d\n", (a.solvingMethods & PPV) != 0 );
@@ -53,15 +55,15 @@ int parseArguments(int argc, char **argv, args_t *parsedArgs){
         // ----------------------------------------------
         else if( strcmp(argv[i], "-f") == 0 ){
             if(f_FlagDeclared){
-                fprintf(stderr, "ERROR : argument error : -f flag can only be declared once\n");
+                fprintf(stderr, "ERROR : in parseArguments : argument error : -f flag can only be declared once\n");
                 return -1;
             }
             else if(i > argc-2){
-                fprintf(stderr, "ERROR : argument error : -f flag expects a following file name, but no arguments left\n");
+                fprintf(stderr, "ERROR : in parseArguments : argument error : -f flag expects a following file name, but no arguments left\n");
                 return -1;
             }
             else if( isReservedFlag(argv[i+1]) ){
-                fprintf(stderr, "ERROR : argument error : -f flag expects a following file name, but another flag is next to it\n");
+                fprintf(stderr, "ERROR : in parseArguments : argument error : -f flag expects a following file name, but another flag is next to it\n");
                 return -1;
             }
             strncpy(parsedArgs->TSPfileName, argv[i+1], MAXNAMELENGTH);
@@ -71,15 +73,15 @@ int parseArguments(int argc, char **argv, args_t *parsedArgs){
         // ----------------------------------------------
         else if( strcmp(argv[i], "-t") == 0 ){
             if(t_FlagDeclared){
-                fprintf(stderr, "ERROR : argument error : -t flag can only be declared once\n");
+                fprintf(stderr, "ERROR : in parseArguments : argument error : -t flag can only be declared once\n");
                 return -1;
             }
             else if(i > argc-2){
-                fprintf(stderr, "ERROR : argument error : -t flag expects a following file name, but no arguments left\n");
+                fprintf(stderr, "ERROR : in parseArguments : argument error : -t flag expects a following file name, but no arguments left\n");
                 return -1;
             }
             else if( isReservedFlag(argv[i+1]) ){
-                fprintf(stderr, "ERROR : argument error : -t flag expects a following file name, but another flag is next to it\n");
+                fprintf(stderr, "ERROR : in parseArguments : argument error : -t flag expects a following file name, but another flag is next to it\n");
                 return -1;
             }
             strncpy(parsedArgs->TOURfileName, argv[i+1], MAXNAMELENGTH);
@@ -137,9 +139,13 @@ int parseArguments(int argc, char **argv, args_t *parsedArgs){
                 }
             }
         }
+        else if( strcmp(argv[i], "-nz") == 0 ){
+            nz = 1;
+            i++;
+        }
         // ----------------------------------------------
         else {
-            fprintf(stderr, "ERROR : argument error : unexpected argument \" %s \"\n", argv[i]);
+            fprintf(stderr, "ERROR : in parseArguments : argument error : unexpected argument \" %s \"\n", argv[i]);
             return -1;
         }
     }

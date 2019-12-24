@@ -12,5 +12,7 @@ extern _Bool verbose;
 // points to log file. Default is stdout
 extern FILE logFile;
 
+extern _Bool nz;
+
 
 #endif

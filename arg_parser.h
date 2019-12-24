@@ -24,7 +24,7 @@ typedef struct args_s{
 
 void init_args_t(args_t *a);
 
-void print_args_t(args_t a);
+void print_args(args_t a);
 
 int isReservedFlag(char *str);
 
