@@ -9,7 +9,7 @@ all : $(EXECS)
 clean:
 	rm -rf $(EXECS) *.o
 
-maintest: brute_force.o basic_Q.o TSP_parser_Q.o arg_parser.o main.o
+maintest: two_opt.o random_walk.o nearest_neighbour.o brute_force.o basic_Q.o TSP_parser_Q.o arg_parser.o main.o
 	$(CC) -o $@ $^ $(CFLAGS)
 
 

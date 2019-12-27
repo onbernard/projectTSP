@@ -7,6 +7,9 @@
 #include "TSP_parser_Q.h"
 #include "arg_parser.h"
 #include "brute_force.h"
+#include "nearest_neighbour.h"
+#include "random_walk.h"
+#include "two_opt.h"
 
 /*
 Usage :  ./tsp -f <file> [-t <tour>] [-v [<file>]] -<méthode> [-h]
@@ -132,17 +135,38 @@ int main(int argc, char **argv){
 
     fillMatDist(instance.matDist, instance.tabCoord, instance.dimension);
 
-    bruteForce(&instance, tourBuffer);
+    double length = bruteForce(&instance, tourBuffer);
 
     printf("Brute force:\n\n");
     for(int i=0; i<instance.dimension; i++){
         printf("%d ", tourBuffer[i]);
     }
+    printf("\nLength = %lf\n", length);
+
     printf("\n\nBrute force avec matrice: \n\n");
-    bruteForceMatrix(&instance, tourBuffer);
+    length = bruteForceMatrix(&instance, tourBuffer);
     for(int i=0; i<instance.dimension; i++){
         printf("%d ", tourBuffer[i]);
     }
-    printf("\n");
+    printf("\nLength = %lf\n", length);
+
+    length = nearestNeighbourSolver(&instance, tourBuffer);
+    printf("\n\nNearest neighbour solver: \n\n");
+
+    for(int i=0; i<instance.dimension; i++){
+        printf("%d ", tourBuffer[i]);
+    }
+    printf("\nLength = %lf\n\n", length);
+
+    length = randomWalkSolver(&instance, tourBuffer);
+    printf("\n\nRandom walk solver: \n\n");
+    for(int i=0; i<instance.dimension; i++){
+        printf("%d ", tourBuffer[i]);
+    }
+    printf("\nLength = %lf\n\n", length);
+
+    printf("\nTWO OPT\n");
+    twoOpt(&instance, tourBuffer);
+
     return 0;
 }

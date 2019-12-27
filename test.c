@@ -3,75 +3,51 @@
 #include <string.h>
 #include <limits.h>
 
-void swap(char str[], int i, int j){
-    char temp = str[i];
-    str[i] = str[j];
-    str[j] = temp;
-    return;
-}
-
-int compare (const void *a, const void * b) 
-{  return ( *(char *)a - *(char *)b ); } 
-
-void sort(char str[], int start, int end){
-    int pivot = start;
-    int j = end-1;
-    while(pivot<j){
-        if( str[pivot+1] <= str[pivot] ){
-            swap(str, pivot+1, pivot);
-            pivot++;
-        }
-        else{
-            swap(str, pivot+1, j);
-            j--;
-        }
-    }
-}
-
-long int fact(int n){
-    long int outp = 1;
-    for(int i = 1; i<=n; i++){
-        outp *= i;
-        printf("%ld\n", outp);
-    }
-    return outp;
-}
-
+#include "two_opt.h"
 
 int main(int argc, char **argv){
-
-    char str[9];
-    strcpy(str, "ABCDEFGH");
-
-    long int n = 1;
-    printf("%s\n", str);
-
-    while(1){
-        int i = 0;
-        int first = -1;
-        while( i<7){
-            if(str[i] < str[i+1]){
-                first = i;
-            }
-            i++;
+    int **tabCoord = (int **) malloc(4*sizeof(int *));
+    if(tabCoord == NULL){
+        exit(-1);
+    }
+    for(int i=0; i<4; i++){
+        tabCoord[i] = (int *) malloc(2*sizeof(int));
+        if(tabCoord[i] == NULL){
+            exit(-1);
         }
-        if(first == -1){
-            break;
-        }
-        int j = first+1;
-        int sec = first +1;
-        while( j<8 ){
-            if( str[j] > str[first] && str[j] < str[sec] ){
-                sec = j;
-            }
-            j++;
-        }
-        //printf("first: %d  second: %d\n", first, sec);
-        swap(str, first, sec);
-        qsort( str + first + 1, 8 - first - 1, sizeof(str[0]), compare ); 
-        printf("%s\n", str);
-        n++;
     }
 
-    printf("%ld   %ld\n\n", fact(8) , n);
+    tabCoord[0][0] = 2233;
+    tabCoord[0][1] = 1424;
+    tabCoord[1][0] = 1112;
+    tabCoord[1][1] = 2049;
+    tabCoord[2][0] = 2233;
+    tabCoord[2][1] = 10;
+    tabCoord[3][0] = 7608;
+    tabCoord[3][1] = 4458;
+
+    int b = isCrossing(tabCoord, 0, 1, 2, 3);
+
+    printf("%d\n", b);
+
+    /*
+    A[0][0] = 809.0;
+    A[0][1] = 5375.0;
+    A[0][2] = 6496.0;
+    A[1][0] = -625.0;
+    A[1][1] = 4448.0;
+    A[1][2] = 2409.0;
+
+    printSyst(A);
+
+    L( A, 0, 1, -A[1][0]/A[0][0]);
+    printSyst(A); printf("\n");
+    M(A, 1, 1.0/A[1][1]);
+    printSyst(A); printf("\n");
+
+    double Tp = A[1][2];
+    double T = ( A[0][2] - A[0][1]*Tp ) / A[0][0];
+
+    printf("\n%lf %lf\n\n", T, Tp);
+    */
 }

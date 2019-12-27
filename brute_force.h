@@ -3,9 +3,9 @@
 
 #include "TSP_parser_Q.h"
 
-void bruteForceMatrix(instance_t *instance, int *tourBuffer);
+double bruteForceMatrix(instance_t *instance, int *tourBuffer);
 
-void bruteForce(instance_t *instance, int *tourBuffer);
+double bruteForce(instance_t *instance, int *tourBuffer);
 
 void fillMatDist(double **matDist, int **tabCoord, unsigned int size);
 

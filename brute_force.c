@@ -9,7 +9,7 @@
 
 extern _Bool nz;
 
-void bruteForceMatrix(instance_t *instance, int *tourBuffer){
+double bruteForceMatrix(instance_t *instance, int *tourBuffer){
     unsigned dim = instance->dimension;
 
     double length = 0;
@@ -41,9 +41,12 @@ void bruteForceMatrix(instance_t *instance, int *tourBuffer){
     }
  
     memcpy(tourBuffer, minTour, dim*sizeof(minTour[0]));
+    free(minTour);
+    free(tabTour);
+    return minLength;
 }
 
-void bruteForce(instance_t *instance, int *tourBuffer){
+double bruteForce(instance_t *instance, int *tourBuffer){
     unsigned dim = instance->dimension;
 
     double length = 0;
@@ -75,6 +78,9 @@ void bruteForce(instance_t *instance, int *tourBuffer){
     }
 
     memcpy(tourBuffer, minTour, dim*sizeof(minTour[0]));
+    free(minTour);
+    free(tabTour);
+    return minLength;
 }
 
 void fillMatDist(double **matDist, int **tabCoord, unsigned int size){
