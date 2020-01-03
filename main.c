@@ -73,18 +73,18 @@ int main(int argc, char **argv){
 
     int err;
     err = parseArguments(argc, argv, &parsedArgs);
+    if(err <= 0){
+        printf("%s\n", HELP);
+    }
     if( err < 0 ){
         fprintf(stderr, "ERROR : in main : parseArguments error\n");
         return -1;
-    }
-    else if( err == 0 ){
-        printf("%s\n", HELP);
     }
 
     print_args(parsedArgs);
 
 
-    FILE *fp = fopen("test.TSP", "r");
+    FILE *fp = fopen(parsedArgs.TSPfileName, "r");
     if(fp == NULL){
         fprintf(stderr, "fopen failed\n");
         return -1;
