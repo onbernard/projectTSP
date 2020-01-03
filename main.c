@@ -10,6 +10,7 @@
 #include "nearest_neighbour.h"
 #include "random_walk.h"
 #include "two_opt.h"
+#include "genetic_algorithm.h"
 
 /*
 Usage :  ./tsp -f <file> [-t <tour>] [-v [<file>]] -<méthode> [-h]
@@ -166,7 +167,18 @@ int main(int argc, char **argv){
     printf("\nLength = %lf\n\n", length);
 
     printf("\nTWO OPT\n");
-    twoOpt(&instance, tourBuffer);
+    length = twoOpt(&instance, tourBuffer);
+    for(int i=0; i<instance.dimension; i++){
+        printf("%d ", tourBuffer[i]);
+    }
+    printf("\nLength = %lf\n\n", length);
+
+    printf("\nGENETIC ALGORITHM\n");
+    length = geneticAlgorithmSolver(&instance, tourBuffer, 30, 200, 0.3);
+    for(int i=0; i<instance.dimension; i++){
+        printf("%d ", tourBuffer[i]);
+    }
+    printf("\nLength = %lf\n\n", length);
 
     return 0;
 }

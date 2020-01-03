@@ -3,7 +3,11 @@
 
 #include "TSP_parser_Q.h"
 
-void twoOpt(instance_t *instance, int *tabTour);
+double twoOpt(instance_t *instance, int *tabTour);
+
+int doOneDecrossPass(instance_t *instance, int *tabTour);
+
+int numberOfCrossing(instance_t *instance, int *tabTour);
 
 double absF(double x);
 

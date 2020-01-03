@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "tsp_parser_q.h": "c",
+        "two_opt.h": "c"
+    }
+}

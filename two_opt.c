@@ -5,13 +5,43 @@
 #include "two_opt.h"
 
 #include "TSP_parser_Q.h"
+#include "brute_force.h"
 
-void twoOpt(instance_t *instance, int *tabTour){
+double twoOpt(instance_t *instance, int *tabTour){
+    int n = 1;
+    int i = 0;
+    while(n != 0 && i < 1000){
+        n = doOneDecrossPass(instance, tabTour);
+        printf("\nDone one pass. Number of crossing removed : %d\n\n", n);
+        i++;
+    }
+    return tourLength(tabTour, instance->tabCoord, instance->dimension);
+}
+
+int doOneDecrossPass(instance_t *instance, int *tabTour){
+    int dim = instance->dimension;
+    int n = 0;
+    for(int i=1; i<dim; i++){
+        for(int j=i+2; j<dim; j++){
+            if( isCrossing(instance->tabCoord, tabTour[i-1], tabTour[i], tabTour[j-1], tabTour[j]) ){
+                n++;
+                int temp = tabTour[i];
+                tabTour[i] = tabTour[j-1];
+                tabTour[j-1] = temp;
+            }
+        }
+    }
+    return n;
+}
+
+int numberOfCrossing(instance_t *instance, int *tabTour){
     int dim = instance->dimension;
     int **tabCoord = instance->tabCoord;
+    int n = 0;
     for(int i=1; i<dim; i++){
-        for(int j=i+1; j<dim; j++){
+        for(int j=i+2; j<dim; j++){
             if( isCrossing(instance->tabCoord, tabTour[i-1], tabTour[i], tabTour[j-1], tabTour[j]) ){
+                n++;
                 int A = tabTour[i-1];
                 int B = tabTour[i];
                 int C = tabTour[j-1];
@@ -21,6 +51,7 @@ void twoOpt(instance_t *instance, int *tabTour){
             }
         }
     }
+    return n;
 }
 
 double absF(double x){
