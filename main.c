@@ -30,64 +30,67 @@ Usage :  ./tsp -f <file> [-t <tour>] [-v [<file>]] -<méthode> [-h]
 -ga <nombre d'individus> <nombre de générations> <taux de mutation> :
 algorithme génétique, défaut = 20 individus, 200 générations, 0.3 mutation.
 */
-/*
-char *TSPfileName = NULL;
-char *TOURfileName = NULL;
-_Bool verbose = 0;
-char *logFileName = NULL;
-FILE *logs = stdout
-_Bool exportResults = 0;
-char *exportFileName = NULL;
-_Bool bf = 0;
-_Bool bfm = 0;
-_Bool ppv = 0;
-_Bool rw = 0;
-_Bool twoOpt = 0;
-_Bool ga = 0;
-int ga_nSpecimens = 20;
-int ga_nGenerations = 200;
-double ga_mutationRate = 0.3;
-*/
-
-_Bool nz = 0;
 
 // 1 if verbose mode is on, 0 if off. Default is 0
 _Bool verbose = 0;
 
 // points to log file. Default is stdout
-extern FILE logFile;
-
-// 1 if a TOUR file has been given
-extern _Bool TOURflag;
+FILE *logfileP;
 
 
 int main(int argc, char **argv){
-    args_t parsedArgs;
-    memset( &(parsedArgs.TSPfileName), 0, MAXNAMELENGTH * sizeof(char) );
-    memset( &(parsedArgs.TOURfileName), 0, MAXNAMELENGTH * sizeof(char) );
-    memset( &(parsedArgs.logfileName), 0, MAXNAMELENGTH * sizeof(char) );
-    parsedArgs.ga_nSpecimens = 20;
-    parsedArgs.ga_nGenerations = 200;
-    parsedArgs.ga_mutationRate = 0.3;
-
+    // ================== PARSE ARGUMENTS ===================
+    args_t args;
+    init_args_t(&args);
 
     int err;
-    err = parseArguments(argc, argv, &parsedArgs);
+    err = parseArguments(argc, argv, &args);
     if(err <= 0){
-        printf("%s\n", HELP);
+        printf("USAGE:\n%s\n", HELP);
     }
     if( err < 0 ){
-        fprintf(stderr, "ERROR : in main : parseArguments error\n");
         return -1;
     }
 
-    print_args(parsedArgs);
+    FILE *TSPfileP;
+    FILE *TOURfileP;
+    FILE *outfileP;
 
-
-    FILE *fp = fopen(parsedArgs.TSPfileName, "r");
-    if(fp == NULL){
-        fprintf(stderr, "fopen failed\n");
+    // ================== OPEN TSP FILE ====================
+    TSPfileP = fopen(args.TSPfileName, "r");
+    if(TSPfileP == NULL){
+        fprintf(stderr, "ERROR : in main : fopen failed for TSP file\n");
         return -1;
+    }
+
+    // ==================== OPEN TOUR FILE =====================
+    if(args.TOURfileName[0] != 0){
+        TOURfileP = fopen(args.TOURfileName, "r");
+        if(TOURfileP == NULL){
+            fprintf(stderr, "ERROR : in main : fopen failed for tour file\n");
+            return -1;
+        }
+    }
+
+    // ================= LOGS ======================
+    if(args.logfileName[0] != 0){
+        logfileP = fopen(args.logfileName, "w");
+        if(logfileP == NULL){
+            fprintf(stderr, "ERROR : in main : fopen failed for log file");
+            return -1;
+        }
+    }
+    else{
+        logfileP = stdout;
+    }
+
+    // ================== OPEN OUT CSV FILE ==================
+    if(args.outputfileName[0] != 0){
+        outfileP = fopen(args.outputfileName, "w");
+        if(outfileP == NULL){
+            fprintf(stderr, "ERROR : in main : fopen failed for output csv file\n");
+            return -1;
+        }
     }
 
     instance_t instance;

@@ -5,12 +5,11 @@
 #include "globals.h"
 #include "arg_parser.h"
 
-_Bool nz = 0;
-
 _Bool verbose = 0;
 
+FILE *logfile;
+
 void parseArgumentsDynamicTest(){
-    printf("\033[0;31m");
     char input[128];
     args_t args;
     init_args_t(&args);
@@ -19,7 +18,7 @@ void parseArgumentsDynamicTest(){
     char s[32];
 
     while(!stop){
-        printf("ENTER A STRING:\n");
+        printf("ENTER A STRING (first word is  supposed to be tsp and is not checked) :\n");
         fgets(input, 128, stdin);
         input[strcspn(input, "\n")] = 0;
         char *argv[32];
@@ -30,15 +29,20 @@ void parseArgumentsDynamicTest(){
             argc++;
             argv[argc] = strtok(NULL, " ");
         }
+        printf("\nVous avez entré:\n");
         for(int i=0; i<argc; i++){
             printf("%d : %s\n", i, argv[i]);
         }
 
         outp = parseArguments(argc, argv, &args);
-        print_args(args);
-        printf("return value: %d\n", outp);
+        printf("\nreturn value: %d\n", outp);
+        if(outp >= 0){
+            printf("\nRésultat de parseArguments:\n");
+            print_args(args);
+            printf("\n");
+        }
 
-        printf("VOULEZ VOUS CONTINUER? Oui = o, non = other\n");
+        printf("\nVOULEZ VOUS CONTINUER? Oui = o, non = other\n");
         fgets(s, 32, stdin);
         if(strcmp(s, "o\n") != 0){
             stop = 1;

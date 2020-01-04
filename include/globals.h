@@ -9,10 +9,7 @@
 // 1 if verbose mode is on, 0 if off. Default is 0
 extern _Bool verbose;
 // points to log file. Default is stdout
-extern FILE logFile;
-
-// TODO : just change instance tab structure
-extern _Bool nz;
+extern FILE *logfileP;
 
 
 #endif

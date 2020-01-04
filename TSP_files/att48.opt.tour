@@ -3,8 +3,8 @@ COMMENT : Optimum solution  for att48
 TYPE : TOUR
 DIMENSION : 48
 TOUR_SECTION
-1
 8
+1
 38
 31
 44

@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-#define MAXNAMELENGTH 32
+#include "globals.h"
 
 // USED IN READKEYWORD AS RETURN VALUES
 #define NAME_F 0b1
@@ -40,6 +40,7 @@
 typedef struct instance_s {
    char name[MAXNAMELENGTH]; // INSTANCE NAME
    char type[MAXNAMELENGTH]; // INSTANCE TYPE
+   char comment[512];
    int dimension; // NUMBER OF VERTICES
    char edge_type[MAXNAMELENGTH];
    double length; // LENGTH OF CYCLE

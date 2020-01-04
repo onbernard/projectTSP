@@ -21,6 +21,7 @@ int parseArguments(int argc, char **argv, args_t *argsBuffer){
     _Bool f_FlagDeclared = 0; // TO KNOW IF TWO FLAG ARE GIVEN
     _Bool t_FlagDeclared = 0; // IDEM
     _Bool o_FlagDeclared = 0; // IDEM
+    _Bool v_FlagDeclared = 0; // IDEM
     int returnValue = 1;
 
     int i = 1;
@@ -86,7 +87,12 @@ int parseArguments(int argc, char **argv, args_t *argsBuffer){
         }
         // ========================= VERBOSE MODE =======================
         else if( strcmp(argv[i], "-v") == 0 ){
+            if(v_FlagDeclared){
+                fprintf(stderr, "ARGUMENT ERROR : -v flag can only be declared once\n");
+                return -1;
+            }
             verbose = 1;
+            v_FlagDeclared = 1;
             ++i;
             if( i<argc && !isReservedFlag(argv[i]) ){
                 strncpy(argsBuffer->logfileName, argv[i], MAXNAMELENGTH);
@@ -122,13 +128,13 @@ int parseArguments(int argc, char **argv, args_t *argsBuffer){
         else if( strcmp(argv[i], "-ga") == 0 ){
             argsBuffer->solvingMethods += GA;
             ++i;
-            if( i<argc && atoi(argv[i])>0 ){
+            if( i<argc && atoi( argv[i])>0 ){
                 argsBuffer->ga_nSpecimens = atoi(argv[i]);
                 ++i;
-                if( i<argc && atoi(argv[i])>0 ){
+                if( i<argc && atoi( argv[i])>0 ){
                     argsBuffer->ga_nGenerations = atoi(argv[i]);
                     ++i;
-                    if( i<argc && atof(argv[i])>0.0 ){
+                    if( i<argc && atof( argv[i])>0.0 ){
                         argsBuffer->ga_mutationRate = atof(argv[i]);
                         ++i;
                     }
@@ -172,6 +178,7 @@ void init_args_t(args_t *args){
     args->ga_nSpecimens = 20;
     args->ga_nGenerations = 200;
     args->ga_mutationRate = 0.3;
+    args->nz = 0;
 }
 
 ///
@@ -180,7 +187,7 @@ void init_args_t(args_t *args){
 void print_args(args_t args){
     printf("TSP file name: %s\nTOUR file name: %s\nlog file name: %s\noutput file name: %s\n", args.TSPfileName, args.TOURfileName, args.logfileName, args.outputfileName);
     printf("verbose mode: %d\n", verbose);
-    printf("NZ mode: %d\n", nz);
+    printf("NZ mode: %d\n", args.nz);
     printf("BF: %d\n", (args.solvingMethods & BF) != 0);
     printf("BFM: %d\n", (args.solvingMethods & BFM) != 0 );
     printf("PPV: %d\n", (args.solvingMethods & PPV) != 0 );
