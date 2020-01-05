@@ -3,7 +3,7 @@
 #include <string.h>
 #include "TOUR_parser.h"
 
-#include "TSP_parser_Q.h"
+#include "TSP_parser.h"
 #include "globals.h"
 
 int parseTOURfile(FILE *fp, instance_t *instance, _Bool nz){
@@ -12,14 +12,15 @@ int parseTOURfile(FILE *fp, instance_t *instance, _Bool nz){
     unsigned char specs_FLAGS = 0;
     unsigned int nLine = 0;
 
-    while( specs_FLAGS != NAME_F|TYPE_F|DIMENSION_F ){
-        err = fgets(buffer, MAXNAMELENGTH, fp);
+    while( specs_FLAGS != (NAME_F|TYPE_F|DIMENSION_F) ){
+        err = fgets(buffer, 512, fp);
         if(err == NULL){
             fprintf(stderr, "TOUR FILE FORMAT ERROR : eof reached at line %d\n", nLine);
             return -1;
         }
         buffer[strcspn(buffer, "\n")] = 0;
         nLine++;
+        printf("%d %s\n", nLine, buffer);
 
         char *firstHalf = strtok(buffer, ":");
         if(firstHalf == NULL){
@@ -45,8 +46,9 @@ int parseTOURfile(FILE *fp, instance_t *instance, _Bool nz){
         }
 
         unsigned char keyword = specKeyword(firstHalf);
-        if(specs_FLAGS & keyword != 0){
+        if( (specs_FLAGS & keyword) != 0){
             fprintf(stderr, "TOUR FILE FORMAT ERROR : %s already specified\n", firstHalf);
+            return -1;
         }
         switch(keyword){
             case NAME_F:
@@ -58,7 +60,7 @@ int parseTOURfile(FILE *fp, instance_t *instance, _Bool nz){
                     fprintf(stderr, "TOUR FILE FORMAT ERROR : type has to be TOUR\n");
                     return -1;
                 }
-                strcpy(instance->type, secondHalf);
+                strcpy(instance->type, "TOUR");
                 specs_FLAGS += TYPE_F;
                 break;
             case DIMENSION_F:
@@ -72,7 +74,7 @@ int parseTOURfile(FILE *fp, instance_t *instance, _Bool nz){
                 specs_FLAGS += DIMENSION_F;
                 break;
             case COMMENT_F:
-                strncpy(instance->comment, secondHalf, 511);
+                printf("Comment : %s\n", secondHalf);
                 break;
             default:
                 fprintf(stderr, "TOUR FILE FORMAT ERROR : unexpected keyword : %s\n", firstHalf);
@@ -91,9 +93,10 @@ int parseTOURfile(FILE *fp, instance_t *instance, _Bool nz){
     trim(buffer);
     if( strcmp(buffer, "TOUR_SECTION") != 0 ){
         fprintf(stderr, "TOUR FILE FORMAT ERROR : unexpected keyword : %s\n", buffer);
+        return -1;
     }
 
-    instance->tabTour = (int *) malloc(instance->dimension * sizeof(int));
+    instance->tabTour = (int *) malloc( instance->dimension * sizeof(int));
     if(instance->tabTour == NULL){
         fprintf(stderr, "ERROR : in parseTOURfile : error while allocating tabTour\nAborting...\n");
         abort();
@@ -134,11 +137,25 @@ int parseTOURfile(FILE *fp, instance_t *instance, _Bool nz){
         }
         if(isInArr(instance->tabTour, nCity, i)){
             fprintf(stderr, "TOUR FILE FORMAT ERROR : at line %d, city number %d already in tabTour\n", nLine, nCity);
+            return -1;
         }
 
         instance->tabTour[i] = nCity;
         i++;
     } // while data part
+    err = fgets(buffer, 512, fp);
+    if(err == NULL){
+        fprintf(stderr, "TOUR FILE FORMAT ERROR : eof reached at line %d\n", nLine);
+        return -1;
+    }
+    nLine++;
+    buffer[strcspn(buffer, "\n")] = 0;
+    trim(buffer);
+    if( strcmp(buffer, "-1") != 0 ){
+        fprintf(stderr, "TOUR FILE FORMAT ERROR : expected -1 at line %d but got %s\n", nLine, buffer);
+        return -1;
+    }
+
     err = fgets(buffer, 512, fp);
     if(err == NULL){
         fprintf(stderr, "TOUR FILE FORMAT ERROR : eof reached at line %d\n", nLine);
@@ -165,5 +182,15 @@ _Bool isInArr(int *arr, int value, unsigned int size){
             return 1;
         }
     }
+    return 0;
+}
+
+
+int initTOURinstance(instance_t *instance){
+    memset(instance->name, 0, MAXNAMELENGTH);
+    memset(instance->type, 0, MAXNAMELENGTH);
+    memset(instance->edge_type, 0, MAXNAMELENGTH);
+    instance->dimension = 0;
+    instance->length = 0;
     return 0;
 }

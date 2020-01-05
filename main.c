@@ -4,13 +4,16 @@
 
 #include "globals.h"
 #include "res.h"
-#include "TSP_parser_Q.h"
+#include "TSP_parser.h"
+#include "TOUR_parser.h"
 #include "arg_parser.h"
+/*
 #include "brute_force.h"
 #include "nearest_neighbour.h"
 #include "random_walk.h"
 #include "two_opt.h"
 #include "genetic_algorithm.h"
+*/
 
 /*
 Usage :  ./tsp -f <file> [-t <tour>] [-v [<file>]] -<méthode> [-h]
@@ -46,7 +49,7 @@ int main(int argc, char **argv){
     int err;
     err = parseArguments(argc, argv, &args);
     if(err <= 0){
-        printf("USAGE:\n%s\n", HELP);
+        printf("\n%s\n", HELP);
     }
     if( err < 0 ){
         return -1;
@@ -93,31 +96,56 @@ int main(int argc, char **argv){
         }
     }
 
-    instance_t instance;
-    memset(instance.name, 0, MAXNAMELENGTH * sizeof(char));
-    memset(instance.type, 0, MAXNAMELENGTH * sizeof(char));
-    memset(instance.edge_type, 0, MAXNAMELENGTH * sizeof(char));
-    instance.dimension = 0;
-    instance.length = 0;
-
-    err = parseFile(fp, &instance);
+    // ================== READ TSP FILE ==========================
+    instance_t TSPinstance;
+    instance_t TOURinstance;
+    initTSPinstance(&TSPinstance);
+    initTOURinstance(&TOURinstance);
+    err = parseTSPfile(TSPfileP, &TSPinstance, args.nz);
     if(err < 0){
-        fprintf(stderr, "ERROR in main\n");
         return -1;
     }
-
-    printf("\n\n-----INSTANCE-----\n");
-    printf("Name: %s\n", instance.name);
-    printf("Type: %s\n", instance.type);
-    printf("Dimension: %d\n", instance.dimension);
-    printf("Edge type: %s\n", instance.edge_type);
-    printf("Length: %lf\n", instance.length);
-    printf("tabCoord: \n");
-    for(int i=0; i<instance.dimension; i++){
-        printf("%d %d %d\n", i+1, instance.tabCoord[i][0], instance.tabCoord[i][1]);
+    // ==================== READ TOUR FILE ==========================
+    if(args.TOURfileName[0] != 0){
+        err = parseTOURfile(TOURfileP, &TOURinstance, args.nz);
+        if(err < 0){
+            return -1;
+        }/*
+        else if( TOURinstance.dimension != TSPinstance.dimension){
+            fprintf(stderr, "ERROR : in main : dimensions of TSP and TOUR instances do not correspond (%d vs %d)\n", TSPinstance.dimension, TOURinstance.dimension);
+            return -1;
+        }*/
+        //TOURinstance.length = tourLength(TOURinstance.tabTour, TSPinstance.tabCoord, TSPinstance.dimension);
     }
-    printf("----------------------\n");
 
+
+    printf("\n\n========== TSP INSTANCE %s ==========\n", TSPinstance.name);
+    printf("Name :              %s\n", TSPinstance.name);
+    printf("Type :              %s\n", TSPinstance.type);
+    printf("Dimension :         %d\n", TSPinstance.dimension);
+    printf("Edge type :         %s\n", TSPinstance.edge_type);
+    printf("Length :            %lf\n", TSPinstance.length);
+    printf("tabCoord : \n");
+    for(int i=0; i<TSPinstance.dimension; i++){
+        printf("%d      %d      %d\n", i, TSPinstance.tabCoord[i][0], TSPinstance.tabCoord[i][1]);
+    }
+    printf("===============================================\n\n");
+
+    if(args.TOURfileName[0] != 0){
+        printf("\n\n========== TOUR INSTANCE %s ==========\n", TOURinstance.name);
+        printf("Name :              %s\n", TOURinstance.name);
+        printf("Type :              %s\n", TOURinstance.type);
+        printf("Dimension :         %d\n", TOURinstance.dimension);
+        printf("Edge type :         %s\n", TOURinstance.edge_type);
+        printf("Length :            %lf\n", TOURinstance.length);
+        printf("tabTour : \n");
+        for(int i=0; i<TOURinstance.dimension; i++){
+            printf("%d      %d\n", i, TOURinstance.tabTour[i]);
+        }
+        printf("===============================================\n\n");
+    }
+
+    /*
     instance.matDist = (double **) malloc(instance.dimension * sizeof(double *));
     if(instance.matDist == NULL){
         fprintf(stderr, "ERROR : in main : error while allocating matDist\n");
@@ -182,6 +210,7 @@ int main(int argc, char **argv){
         printf("%d ", tourBuffer[i]);
     }
     printf("\nLength = %lf\n\n", length);
+    */
 
     return 0;
 }
