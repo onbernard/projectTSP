@@ -5,6 +5,13 @@
 
 #include "globals.h"
 
+/**
+ * \file    arg_parser.c
+ * \brief   SOURCE - Parses the arguments given to main, entry point is parseArguments, returns a struct args_t that contains the informations
+ * \author  BERNARD O.
+ * \date    december 2019
+ */
+
 
 ///
 /// THIS IS THE ENTRY POINT TO THE ARGUMENT PARSER.
@@ -184,19 +191,19 @@ void init_args_t(args_t *args){
 ///
 /// FOR DEBUGGING AND VERBOSE MODE
 ///
-void print_args(args_t args){
-    printf("TSP file name: %s\nTOUR file name: %s\nlog file name: %s\noutput file name: %s\n", args.TSPfileName, args.TOURfileName, args.logfileName, args.outputfileName);
-    printf("verbose mode: %d\n", verbose);
-    printf("NZ mode: %d\n", args.nz);
-    printf("BF: %d\n", (args.solvingMethods & BF) != 0);
-    printf("BFM: %d\n", (args.solvingMethods & BFM) != 0 );
-    printf("PPV: %d\n", (args.solvingMethods & PPV) != 0 );
-    printf("RW: %d\n", (args.solvingMethods & RW) != 0 );
-    printf("2OPT: %d\n", (args.solvingMethods & TWOOPT) !=0 );
-    printf("GA: %d\n", (args.solvingMethods & GA) != 0 );
-    printf("    ga, number of specimens: %d\n", args.ga_nSpecimens);
-    printf("    ga, number of generations: %d\n", args.ga_nGenerations);
-    printf("    ga, mutation rate: %lf\n", args.ga_mutationRate);
+void print_args(FILE *fp, args_t args){
+    fprintf(fp, "TSP file name: %s\nTOUR file name: %s\nlog file name: %s\noutput file name: %s\n", args.TSPfileName, args.TOURfileName, args.logfileName, args.outputfileName);
+    fprintf(fp, "verbose mode: %d\n", verbose);
+    fprintf(fp, "NZ mode: %d\n", args.nz);
+    fprintf(fp, "BF: %d\n", (args.solvingMethods & BF) != 0);
+    fprintf(fp, "BFM: %d\n", (args.solvingMethods & BFM) != 0 );
+    fprintf(fp, "PPV: %d\n", (args.solvingMethods & PPV) != 0 );
+    fprintf(fp, "RW: %d\n", (args.solvingMethods & RW) != 0 );
+    fprintf(fp, "2OPT: %d\n", (args.solvingMethods & TWOOPT) !=0 );
+    fprintf(fp, "GA: %d\n", (args.solvingMethods & GA) != 0 );
+    fprintf(fp, "    ga, number of specimens: %d\n", args.ga_nSpecimens);
+    fprintf(fp, "    ga, number of generations: %d\n", args.ga_nGenerations);
+    fprintf(fp, "    ga, mutation rate: %lf\n", args.ga_mutationRate);
 }
 
 ///

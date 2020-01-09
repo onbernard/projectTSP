@@ -2,6 +2,8 @@
     "files.associations": {
         "tsp_parser_q.h": "c",
         "two_opt.h": "c",
-        "globals.h": "c"
+        "globals.h": "c",
+        "nearest_neighbour.h": "c",
+        "brute_force.h": "c"
     }
 }

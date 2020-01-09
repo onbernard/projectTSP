@@ -5,23 +5,42 @@
 
 #include "globals.h"
 
+/**
+ * \file    TSP_parser.c
+ * \brief   SOURCE - Parser for a tsp file
+ * \author  BERNARD O.
+ * \date    december 2019
+ */
+
+/// Parses a tsp file.
+/// It allocates instance->tabTour and the two dimensionnal array instance->tabCoord
+/// CALLS ABORT ON ALLOCATION ERROR
+/// If nz is 0 then a point with coordinates (0,0) is automatically placed on the first index and dimension is incremented by one
+/// Right now these are accepted:
+///     ::: firsthalf ::::: second half :::  fzefzeafeza
+/// Only EUC_2D edges type and TSP file type are accepted
+/// Integers must be strictly greater than 0
+/// A city number must be equal to its position
 int parseTSPfile(FILE *fp, instance_t *instance, _Bool nz){
     char buffer[512]; // IF YOU CAN TWEET IN 512 CHARACTERS YOU CAN WRITE A LINE IN THAT SPACE
     char *err = buffer;
-    unsigned char specs_FLAGS = 0;
+    unsigned char specs_FLAGS = 0; // CONTAINS BITWISE FLAGS FOR THE SPECIFICATION KEYWORDS
     unsigned int nLine = 0;
 
     while( specs_FLAGS != (NAME_F|TYPE_F|DIMENSION_F|EDGE_WEIGHT_TYPE_F) ){
-        // ==================== GET A LINE ==========================
+
+        // =============================== GET LINE =================================
+
         err = fgets(buffer, 512, fp);
         if(err == NULL){
             fprintf(stderr, "TSP FILE FORMAT ERROR : eof reached at line %d\n", nLine);
             return -1;
         }
-        buffer[strcspn(buffer, "\n")] = 0;
+        int endL =strcspn(buffer, "\n");
+        buffer[endL] = 0; // to get rid of the trailing \n
         nLine++;
-        //printf("%d %s\n", nLine, buffer);
 
+        // ----------------- DIVIDE IT  UP -----------------
         char *firstHalf = strtok(buffer, ":");
         if(firstHalf == NULL){
             fprintf(stderr, "TSP FILE FORMAT ERROR : empty line\n");
@@ -35,6 +54,7 @@ int parseTSPfile(FILE *fp, instance_t *instance, _Bool nz){
             return -1;
         }
         trim(secondHalf);
+
 
         if(strlen(firstHalf) == 0){
             fprintf(stderr, "TSP FILE FORMAT ERROR : empty first half of line %d\n", nLine);
@@ -50,6 +70,7 @@ int parseTSPfile(FILE *fp, instance_t *instance, _Bool nz){
             fprintf(stderr, "TSP FILE FORMAT ERROR : %s already specified\n", firstHalf);
             return -1;
         }
+         // =========================== SWITCH =========================
         switch(keyword){
             case NAME_F:
                 strncpy(instance->name, secondHalf, MAXNAMELENGTH-1);
@@ -90,7 +111,7 @@ int parseTSPfile(FILE *fp, instance_t *instance, _Bool nz){
         } // switch
     } // specs keyword loop
 
-    // DATA PART
+    // ============================= DATA PART ============================
     err = fgets(buffer, MAXNAMELENGTH, fp);
     if(err == NULL){
         fprintf(stderr, "TOUR FILE FORMAT ERROR : eof reached at line %d\n", nLine);
@@ -105,6 +126,7 @@ int parseTSPfile(FILE *fp, instance_t *instance, _Bool nz){
         return -1;
     }
 
+    // TABTOUR AND TABCOORD INSTANCIATION
     instance->tabTour = (int *) malloc( instance->dimension * sizeof(int));
     if(instance->tabTour == NULL){
         fprintf(stderr, "ERROR : in parseTSPfile : error while allocating tabTour\nAborting...\n");
@@ -123,6 +145,7 @@ int parseTSPfile(FILE *fp, instance_t *instance, _Bool nz){
         }
     }
 
+    // ========================== READ DATA =======================
     int i;
     int nCity = 1;;
     if(nz){
@@ -141,18 +164,21 @@ int parseTSPfile(FILE *fp, instance_t *instance, _Bool nz){
         }
         nLine++;
         buffer[strcspn(buffer, "\n")] = 0;
-        
-        char *firstPart = strtok(buffer, " ");
+        char *svptr; // HERE OFFICER
+        char *firstPart = strtok_r(buffer, " ", &svptr);
+        //printf("officer %s\n", svptr);
         if(firstPart == NULL){
             fprintf(stderr, "TSP FILE FORMAT ERROR : empty line at line %d\n", nLine);
             return -1;
         }
-        char *secondPart = strtok(NULL, " ");
+        char *secondPart = strtok_r(NULL, " ", &svptr);
+        //printf("officer %s\n", svptr);
         if(secondPart == NULL){
             fprintf(stderr, "TSP FILE FORMAT ERROR : invalid line format at line %d\n", nLine);
             return -1;
         }
-        char *thirdPart = strtok(NULL, " ");
+        char *thirdPart = strtok_r(NULL, " ", &svptr);
+        //printf("officer %s\n", svptr);
         if(thirdPart == NULL){
             fprintf(stderr, "TSP¨FILE FORMAT ERROR : invalid line format at line %d\n", nLine);
             return -1;
@@ -176,8 +202,6 @@ int parseTSPfile(FILE *fp, instance_t *instance, _Bool nz){
 
         instance->tabCoord[i][0] = x;
         instance->tabCoord[i][1] = y;
-
-        nLine++;
         i++;
         nCity++;
 
@@ -194,14 +218,12 @@ int parseTSPfile(FILE *fp, instance_t *instance, _Bool nz){
         fprintf(stderr, "TSP FILE FORMAT ERROR : expected EOF at line %d but got %s\n", nLine, buffer);
         return -1;
     }
-    err = fgets(buffer, 512, fp);
-    if(err != NULL){
-        fprintf(stderr, "TSP FILE FORMAT ERROR : there are still lines after EOF\n");
-        return -1;
-    }
+
     return 0;
 }
 
+/// Returns the flag corresponding to a keyword if str matches one
+/// If not it returns 0
 unsigned char specKeyword(const char str[]){
     if( strcmp(str, "NAME")==0 ){
         return NAME_F;
@@ -223,15 +245,20 @@ unsigned char specKeyword(const char str[]){
     }
 }
 
-int initTSPinstance(instance_t *instance){
+/// Initializes an instance_t structure
+/// Does not allocate anything, just sets all variables to 0
+void initTSPinstance(instance_t *instance){
     memset(instance->name, 0, MAXNAMELENGTH);
     memset(instance->type, 0, MAXNAMELENGTH);
     memset(instance->edge_type, 0, MAXNAMELENGTH);
     instance->dimension = 0;
     instance->length = 0;
-    return 0;
 }
 
+/// Transforms a string like this:
+/// ->|   fs qf   0|<-
+/// into this:
+/// ->|fs qf0000000|<-
 void trim(char str[]){
     int i = 0;
     while(str[i] == ' ' && str[i] != 0){
@@ -254,4 +281,19 @@ void trim(char str[]){
         str[foo] = 0;
         foo++;
     }
+}
+
+/// Prints the contents of a tsp instance in the file pointed to by fp
+void printTSPinstance(FILE *fp, instance_t instance){
+    fprintf(fp, "\n\n========== TSP INSTANCE %s ==========\n", instance.name);
+    fprintf(fp, "Name :              %s\n", instance.name);
+    fprintf(fp, "Type :              %s\n", instance.type);
+    fprintf(fp, "Dimension :         %d\n", instance.dimension);
+    fprintf(fp, "Edge type :         %s\n", instance.edge_type);
+    fprintf(fp, "Length :            %lf\n", instance.length);
+    fprintf(fp, "tabCoord : \n");
+    for(int i=0; i<instance.dimension; i++){
+        fprintf(fp, "%d      %d      %d\n", i, instance.tabCoord[i][0], instance.tabCoord[i][1]);
+    }
+    fprintf(fp, "\n\n========== TSP INSTANCE %s ========== END\n", instance.name);
 }

@@ -7,61 +7,85 @@
 
 #include "brute_force.h"
 #include "globals.h"
-#include "TSP_parser_Q.h"
+#include "TSP_parser.h"
 #include "random_walk.h"
 #include "nearest_neighbour.h"
+#include "tools.h"
 
-
+/**
+ * \file    genetic_algorithm.c
+ * \brief   SOURCE - Implements the genetic algorithm to solve a tsp problem
+ * \author  BERNARD O.
+ * \date    december 2019
+ */
 
 
 double geneticAlgorithmSolver(instance_t *instance, int *tourBuffer, int nSpecimens, int nGenerations, double mutationRate){
+    if(verbose){
+        fprintf(logfileP, "========== IN GA ==========\n");
+    }
+
     int dim = instance->dimension;
     time_t t;
     srand((unsigned) time(&t));
-    double worseLength = -1;
+
+    double worseLength = -1; // the one that will be replaced
     int worseIndex = -1;
 
-    // INITIALIZATION OF POPULATION
-    double *lengthsArr = (double *) malloc(nSpecimens * sizeof(double));
+    // ========================== INITIALIZATION OF POPULATION ====================================================================
+
+    double *lengthsArr = (double *) malloc(nSpecimens * sizeof(double)); // POPULATION LENGTHS ARRAY
     if(lengthsArr == NULL){
-        fprintf(stderr, "ERROR : in geneticAlgorithmSolver : error while allocating lengthsArr\n");
-        return -1;
+        fprintf(stderr, "ERROR : in geneticAlgorithmSolver : error while allocating lengthsArr\nAborting...\n");
+        abort();
     }
-    int **population = (int **) malloc(nSpecimens * sizeof(int *));
+    int **population = (int **) malloc(nSpecimens * sizeof(int *)); // POPULATION ARRAY
     if(population == NULL){
-        fprintf(stderr, "ERROR : in geneticAlgorithmSolver : error while allocating population\n");
-        return -1;
+        fprintf(stderr, "ERROR : in geneticAlgorithmSolver : error while allocating population\nAborting...\n");
+        abort();
     }
     for(int i=0; i<nSpecimens; i++){
-        population[i] = (int *) malloc(dim * sizeof(int));
+        population[i] = (int *) malloc(dim * sizeof(int)); // AN INDIVIDUAL
         if(population[i] == NULL){
-            fprintf(stderr, "ERROR : in geneticAlgorithmSolver : error while allocating population[%d]\n", i);
-            return -1;
+            fprintf(stderr, "ERROR : in geneticAlgorithmSolver : error while allocating population[%d]\nAborting...\n", i);
+            abort();
         }
-        randomWalkSolver(instance, population[i]);
-        lengthsArr[i] = tourLength(population[i], instance->tabCoord, dim);
-        if(worseIndex == -1 || lengthsArr[i] > worseLength){
+        randomWalkSolver(instance, population[i]); // INITIALIZE IT RANDOMLY
+        lengthsArr[i] = tourLength(population[i], instance->tabCoord, dim); // FILL POPULATION LENGTHS ARRAY
+        if(worseIndex == -1 || lengthsArr[i] > worseLength){ // UPDATE WORSE ONE
             worseIndex = i;
             worseLength = lengthsArr[i];
         }
     }
 
-    int *childBuffer = (int *) malloc(dim * sizeof(int));
+    int *childBuffer = (int *) malloc(dim * sizeof(int)); // WHERE BABIES ARE MADE
     if(childBuffer == NULL){
-        fprintf(stderr, "ERROR : in geneticAlgorithmSolver : error while allocating childBuffer\n");
-        return -1;
-    }    
+        fprintf(stderr, "ERROR : in geneticAlgorithmSolver : error while allocating childBuffer\nAborting...\n");
+        abort();
+    }
+    // ===========================================================================================================================
+    
+    if(verbose){
+        fprintf(logfileP, "Initialization of population...\nWorse one is:\n");
+        printTour(population[worseIndex], ' ', dim);
+        fprintf(logfileP, "With length %lf\n\n", worseLength);
+    }
+    // TODO PRINT BEST
 
-    // ITERATE OVER GENERATIONS
+    // =========================== ITERATE OVER GENERATIONS =========================================================
+
     for(int i=0; i<nGenerations; i++){
         int numberOfCrossBreeding = rand() % (nSpecimens/2); // NOT EVERYONE GETS LAID
+        if(verbose){
+            fprintf(logfileP, "Generation %d, there will be %d breedings\n", i, numberOfCrossBreeding);
+        }
         for(int k=0; k<numberOfCrossBreeding; k++){ // BREEDING SEASON!!!!
             int parent1 = rand() % nSpecimens; // YOU GET A BABY
             int parent2 = rand() % nSpecimens; // YOU GET A BABY
             while(parent2 == parent1){
                 parent2 = rand() % dim;
             }
-            if( DPX(instance->tabCoord, population[parent1], population[parent2], childBuffer, dim) < 0 ){
+            if( DPX(instance->tabCoord, population[parent1], population[parent2], childBuffer, dim) < 0 ){ // TODO
                 fprintf(stderr, "ERROR : in geneticAlgorithmSolver : error in DPX\n");
                 return -1;
             }
@@ -89,6 +113,10 @@ double geneticAlgorithmSolver(instance_t *instance, int *tourBuffer, int nSpecim
     }
     free(childBuffer);
     free(population); // DEBOUT LES DAMNES DE LA TEEEEEEEREUH
+
+    if(verbose){
+        fprintf(logfileP, "========== OUT GA ==========\n");
+    }
     return bestLength;
 }
 
@@ -141,8 +169,8 @@ void mute(int *tabTour, unsigned int dim){
 int DPX(int **tabCoord, int *parent1, int *parent2, int *childBuffer, unsigned int size){
     int *extremities = (int *) malloc(2 * size * sizeof(int));
     if(extremities == NULL){
-        fprintf(stderr, "ERROR : in DPX : error while allocating extremities\n");
-        return -1;
+        fprintf(stderr, "ERROR : in DPX : error while allocating extremities\nAborting...\n");
+        abort();
     }
     int numberOfChunks = 0;
 

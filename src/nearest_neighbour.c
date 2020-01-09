@@ -4,97 +4,88 @@
 #include <string.h>
 #include "nearest_neighbour.h"
 
-
-#include "TSP_parser_Q.h"
+#include "TSP_parser.h"
 #include "globals.h"
 #include "brute_force.h"
 
+/**
+ * \file    nearest_neighbour.c
+ * \brief   SOURCE -  Implements the nearest neighbour algorithm to solve a tsp problem
+ * \author  BERNARD O.
+ * \date    december 2019
+ */
+
+/// Implements the nearest neighbour algorithm to solve the tsp problem represented by the instance_t instance structure
+/// Stores the best found tour in the array pointed by tourBuffer and returns its length as a double.
+/// CALLS ABORT ON ALLOCATING ERRORS
 double nearestNeighbourSolver(instance_t *instance, int *tourBuffer){
     unsigned int dim = instance->dimension;
-    int *tabTour = (int *) malloc(dim * sizeof(int));
+
+    int *tabTour = (int *) malloc(dim * sizeof(int)); // WHERE TO STORES THE TOURS
     if(tabTour == NULL){
-        fprintf(stderr, "ERROR : in nearestNeighbourSolver : error while allocating tabTour\n");
-        return -1;
+        fprintf(stderr, "ERROR : in nearestNeighbourSolver : error while allocating tabTour\nAborting...\n");
+        abort();
     }
-    int *freeNodes = (int *) malloc(dim * sizeof(int));
-    if(freeNodes == NULL){
-        fprintf(stderr, "ERROR : in nearestNeighbourSolver : error while allocating freeNodes\n");
-        return -1;
+    int *freeCities = (int *) malloc(dim * sizeof(int)); // TO KNOW WICH CITY HAS ALREADY BEEN SELECTED
+    if(freeCities == NULL){
+        fprintf(stderr, "ERROR : in nearestNeighbourSolver : error while allocating freeCities\nAborting...\n");
+        abort();
     }
     for(int i=0; i<dim; i++){
-        freeNodes[i] = 1;
+        freeCities[i] = 1; // freeCities[i] = 1 means city i is not yet selected, 0 otherwise
     }
 
-    if(nz){
-        tabTour[0] = 0;
-        freeNodes[0] = 0;
-    }
-    else{
-        tabTour[0] = nearestToZero(instance->tabCoord, dim);
-        freeNodes[tabTour[0]] = 0;
-    }
-    int pointA = tabTour[0];
+    // first one is always node 0
+    tabTour[0] = 0;
+    freeCities[0] = 0;
+
+    int cityA = tabTour[0];
     for(int i=1; i<dim; i++){
-        int pointB = findNearestNeighbour(pointA, instance->tabCoord, dim, freeNodes);
-        pointB = findNearestNeighbour(pointA, instance->tabCoord, dim, freeNodes);
-        tabTour[i] = pointB;
-        freeNodes[pointB] = 0;
-        pointA = pointB;
+        int cityB = findNearestNeighbour(cityA, instance->tabCoord, freeCities, dim); // FETCH CLOSEST NEIGHBOUR
+        tabTour[i] = cityB; // TAKE A SEAT YOUNG SKYWALKER
+        freeCities[cityB] = 0; // NOT FREE ANYMORE
+        cityA = cityB; // swipity swapity your city is now spagetti (⋆._.)⊃▁⛥⌒*ﾟ.❉・゜・。.
     }
 
     double length = tourLength(tabTour, instance->tabCoord, dim);
 
     memcpy(tourBuffer, tabTour, dim * sizeof(int));
     free(tabTour);
-    free(freeNodes);
+    free(freeCities);
 
     return length;
 }
 
-int findNearestNeighbour(int node, int **tabCoord, unsigned int size, int *freeNodes){
+/// Finds the city that is closest to cityA that is not yet selected
+/// FREECITIES CONTAINS AT LEAST ONE FREE CITY, unspecified behavious otherwise...
+int findNearestNeighbour(int cityA, int **tabCoord, int *freeCities,  unsigned int size){
     double minDist;
     int iMinDist;
 
 
-    if(node == 0){
-        minDist = distance(node, 1, tabCoord);
+    if(cityA == 0){
+        minDist = distance(cityA, 1, tabCoord);
         iMinDist = 1;
     }
     else{
-        minDist = distance(node, 0, tabCoord);
+        minDist = distance(cityA, 0, tabCoord);
         iMinDist = 0;
     }
     for(int i=0; i<size; i++){
-        if( i != node && freeNodes[i] != 0 ){
-            int dist = distance(node, i, tabCoord);
+        if( i != cityA && freeCities[i] != 0 ){
+            int dist = distance(cityA, i, tabCoord);
             if(dist < minDist){
                 iMinDist = i;
                 minDist = dist;
             }
         }
     }
-    freeNodes[iMinDist] = 0;
+    freeCities[iMinDist] = 0;
     return iMinDist;
 }
 
-int nearestToZero(int **tabCoord, unsigned int size){
-    int minDist = distanceFromZero(0, tabCoord);
-    int iMinDist = 0;
-    for(int i=1; i<size; i++){
-        double dist = distanceFromZero(i, tabCoord);
-        if(dist < minDist){
-            minDist = dist;
-            iMinDist = i;
-        }
-    }
-    return iMinDist;
-}
-
-double distanceFromZero(int node, int **tabCoord){
-    return sqrt( pow(tabCoord[node][0], 2) + pow(tabCoord[node][1], 2) );
-}
-
-double distance(int pointA, int pointB, int **tabCoord){
-    return sqrt( pow(tabCoord[pointA][0] - tabCoord[pointB][0], 2) + pow(tabCoord[pointA][1] - tabCoord[pointB][1], 2) );
+/// Computes the distance between cityA and cityB using the coordinates two dimensionnal array tabCoord
+double distance(int cityA, int cityB, int **tabCoord){
+    return sqrt( pow(tabCoord[cityA][0] - tabCoord[cityB][0], 2) + pow(tabCoord[cityA][1] - tabCoord[cityB][1], 2) );
 }
 

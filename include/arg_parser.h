@@ -1,14 +1,14 @@
 #ifndef _CAPTURE_H
 #define _CAPTURE_H
 
+#include "globals.h"
+
 /**
  * \file    arg_parser.h
- * \brief   This parses the arguments given to main, entry point is parseArguments
+ * \brief   HEADER - Parses the arguments given to main, entry point is parseArguments, returns a struct args_t that contains the informations
  * \author  BERNARD O.
  * \date    december 2019
  */
-
-#include "globals.h"
 
 /// \def    Solving methods flags
 #define BF 0b1
@@ -49,7 +49,7 @@ typedef struct args_s{
  * 
  * \param   argc        :   same as in main
  * \param   argv        :   same as in main
- * \param   argsBuffer  :   buffer to where the results are to be put
+ * \param   argsBuffer  :   buffer to where the results are written
  * 
  * \return  a negavive value if an error has occured, 0 if help has to be displayed, else a positive value
  */
@@ -66,9 +66,10 @@ void init_args_t(args_t *args);
 
 /** \brief  Prints an args_t structure
  * 
+ *  \param  fp   : A file pointer where args will be printed
  *  \param  args : the args_t structure to be printed
  */
-void print_args(args_t args);
+void print_args(FILE *fp, args_t args);
 
 
 /**

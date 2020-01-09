@@ -1,0 +1,55 @@
+=========================== TSP PROGRAM ===========================
+
+Results of arguments parsing is (unspecified fields are empty) :
+TSP file name: TSP_files/test.TSP
+TOUR file name: 
+log file name: log.txt
+output file name: o.csv
+verbose mode: 1
+NZ mode: 0
+BF: 0
+BFM: 0
+PPV: 0
+RW: 1
+2OPT: 1
+GA: 0
+    ga, number of specimens: 20
+    ga, number of generations: 200
+    ga, mutation rate: 0.300000
+
+Reading TSP_files/test.TSP file...
+
+
+========== TSP INSTANCE att10 ==========
+Name :              att10
+Type :              TSP
+Dimension :         11
+Edge type :         EUC_2D
+Length :            0.000000
+tabCoord : 
+0      0      0
+1      6734      1453
+2      2233      10
+3      5530      1424
+4      401      841
+5      3082      1644
+6      7608      4458
+7      7573      3716
+8      7265      1268
+9      6898      1885
+10      1112      2049
+
+
+========== TSP INSTANCE att10 ========== END
+Starting solving methods...
+
+Random walk method found a tour with length 46648.927558 in 0.000000 secondes
+7 2 10 4 9 5 1 6 3 0 8 
+========== IN 2OPT ==========
+Decross pass 0 . Number of crossings removed : 6
+Decross pass 1 . Number of crossings removed : 3
+Decross pass 2 . Number of crossings removed : 3
+Decross pass 3 . Number of crossings removed : 0
+========== OUT 2OPT ==========
+2-opt method found a tour with length 30229.221598 in 0.000000 secondes
+7 6 10 4 0 5 9 1 3 2 8 

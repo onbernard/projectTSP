@@ -6,12 +6,17 @@
 #include "TSP_parser.h"
 #include "globals.h"
 
+/// Parses a tour file and stores the results in the instance_t structure pointed by argument instance
+/// If nz is 0 then the point (0,0) is automaticly added at the first index
+/// It allocates instance->tabTour
+/// CALLS ABORT ON ALLOCATION ERRORS
 int parseTOURfile(FILE *fp, instance_t *instance, _Bool nz){
     char buffer[512]; // IF YOU CAN TWEET IN 512 CHARACTERS YOU CAN WRITE A LINE IN THAT SPACE
     char *err = buffer;
     unsigned char specs_FLAGS = 0;
     unsigned int nLine = 0;
 
+    // =========================== SPECS PART =================================
     while( specs_FLAGS != (NAME_F|TYPE_F|DIMENSION_F) ){
         err = fgets(buffer, 512, fp);
         if(err == NULL){
@@ -35,6 +40,12 @@ int parseTOURfile(FILE *fp, instance_t *instance, _Bool nz){
             return -1;
         }
         trim(secondHalf);
+
+        char *rest = strtok(NULL, ":");
+        if(rest != NULL){
+            fprintf(stderr, "TSP FORMAT ERROR : two separators at line %d\n", nLine);
+            return -1;
+        }
 
         if(strlen(firstHalf) == 0){
             fprintf(stderr, "TOUR FILE FORMAT ERROR : empty first half of line %d\n", nLine);
@@ -176,6 +187,8 @@ int parseTOURfile(FILE *fp, instance_t *instance, _Bool nz){
     return 0;
 }
 
+/// Checks if value is in array
+/// used in parseTOURfile to check if every city number is unique
 _Bool isInArr(int *arr, int value, unsigned int size){
     for(int i=0; i<size; i++){
         if(arr[i] == value){
@@ -186,11 +199,27 @@ _Bool isInArr(int *arr, int value, unsigned int size){
 }
 
 
-int initTOURinstance(instance_t *instance){
+/// Not quite a copy of initTSPinstance
+void initTOURinstance(instance_t *instance){
     memset(instance->name, 0, MAXNAMELENGTH);
     memset(instance->type, 0, MAXNAMELENGTH);
     memset(instance->edge_type, 0, MAXNAMELENGTH);
     instance->dimension = 0;
     instance->length = 0;
-    return 0;
+    instance->tabTour = NULL;
+}
+
+/// Prints the contents of a tour instance in the file pointed to by fp
+void printTOURinstance(FILE *fp, instance_t instance){
+    fprintf(fp, "\n\n========== TOUR INSTANCE %s ==========\n", instance.name);
+    fprintf(fp, "Name :              %s\n", instance.name);
+    fprintf(fp, "Type :              %s\n", instance.type);
+    fprintf(fp, "Dimension :         %d\n", instance.dimension);
+    fprintf(fp, "Edge type :         %s\n", instance.edge_type);
+    fprintf(fp, "Length :            %lf\n", instance.length);
+    fprintf(fp, "tabTour : \n");
+    for(int i=0; i<instance.dimension; i++){
+        fprintf(fp, "%d      %d\n", i, instance.tabTour[i]);
+    }
+    fprintf(fp, "\n\n========== TOUR INSTANCE %s ========== END\n", instance.name);
 }
