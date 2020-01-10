@@ -1,0 +1,128 @@
+\hypertarget{brute__force_8c}{}\doxysection{src/brute\+\_\+force.c File Reference}
+\label{brute__force_8c}\index{src/brute\_force.c@{src/brute\_force.c}}
+
+
+S\+O\+U\+R\+CE -\/ Implements the brute force methode either with a distance matrix or not.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}brute\+\_\+force.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}globals.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}T\+S\+P\+\_\+parser.\+h\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{brute__force_8c_a5868a1c7de72885819512f91ddd11b6d}{brute\+Force\+Matrix}} (\mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} $\ast$instance, int $\ast$tour\+Buffer)
+\begin{DoxyCompactList}\small\item\em Implements the brute force algorithm using a distance matrix. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{brute__force_8c_adc66a2c3b2f129262fe765657e6e1078}{brute\+Force}} (\mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} $\ast$instance, int $\ast$tour\+Buffer)
+\begin{DoxyCompactList}\small\item\em Implements the brute force algorithm calculating every distance on the fly. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{brute__force_8c_a0c4fac7519ffcba0cae22da386c1a296}{fill\+Mat\+Dist}} (double $\ast$$\ast$mat\+Dist, int $\ast$$\ast$tab\+Coord, unsigned int size)
+\begin{DoxyCompactList}\small\item\em Fills the array pointed by mat\+Dist with the distances between cities with coordinates in tab\+Coord. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{brute__force_8c_a1e8157557d0513caa82cca451bbe6737}{tour\+Length}} (int $\ast$tab\+Tour, int $\ast$$\ast$tab\+Coord, unsigned int size)
+\begin{DoxyCompactList}\small\item\em Computes the length of the tour pointed to by tab\+Tour using coordinates in tab\+Coord. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{brute__force_8c_a0b8990115462da85aa0ddba5512fb3c3}{tour\+Length\+Matrix}} (int $\ast$tab\+Tour, double $\ast$$\ast$mat\+Dist, unsigned int size)
+\begin{DoxyCompactList}\small\item\em Computes the length of the tour pointed to by tab\+Tour using the distance matrix mat\+Dist. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{brute__force_8c_ad9b9cb4068f30fbbfcc14425e6c56d5e}{next}} (int $\ast$tab\+Tour, unsigned int size)
+\begin{DoxyCompactList}\small\item\em Generates the next permutation of integer sequence in lexicographic order. Tabtour is overwritten if there is a next one after it. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{brute__force_8c_ac70138609ef6aa6fabca57aca8681e83}{compare}} (const void $\ast$a, const void $\ast$b)
+\begin{DoxyCompactList}\small\item\em Used in next to sort the array. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{brute__force_8c_a1f901bebf07ff8ce586454e61dc719d9}{swap}} (int $\ast$tab, int i, int j)
+\begin{DoxyCompactList}\small\item\em Swaps two values in the tab array. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+S\+O\+U\+R\+CE -\/ Implements the brute force methode either with a distance matrix or not. 
+
+\begin{DoxyAuthor}{Author}
+B\+E\+R\+N\+A\+RD O. 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+december 2019 
+\end{DoxyDate}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{brute__force_8c_adc66a2c3b2f129262fe765657e6e1078}\label{brute__force_8c_adc66a2c3b2f129262fe765657e6e1078}} 
+\index{brute\_force.c@{brute\_force.c}!bruteForce@{bruteForce}}
+\index{bruteForce@{bruteForce}!brute\_force.c@{brute\_force.c}}
+\doxysubsubsection{\texorpdfstring{bruteForce()}{bruteForce()}}
+{\footnotesize\ttfamily double brute\+Force (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} $\ast$}]{instance,  }\item[{int $\ast$}]{tour\+Buffer }\end{DoxyParamCaption})}
+
+
+
+Implements the brute force algorithm calculating every distance on the fly. 
+
+Implements the brute force algorithm on a tsp problem calculating the distances on the fly. It uses an array where it cycles through every possible permutation and then stores the best one in the buffer passed as second argument. C\+A\+L\+LS A\+B\+O\+RT ON A\+L\+L\+O\+C\+A\+T\+I\+ON E\+R\+R\+O\+RS \mbox{\Hypertarget{brute__force_8c_a5868a1c7de72885819512f91ddd11b6d}\label{brute__force_8c_a5868a1c7de72885819512f91ddd11b6d}} 
+\index{brute\_force.c@{brute\_force.c}!bruteForceMatrix@{bruteForceMatrix}}
+\index{bruteForceMatrix@{bruteForceMatrix}!brute\_force.c@{brute\_force.c}}
+\doxysubsubsection{\texorpdfstring{bruteForceMatrix()}{bruteForceMatrix()}}
+{\footnotesize\ttfamily double brute\+Force\+Matrix (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} $\ast$}]{instance,  }\item[{int $\ast$}]{tour\+Buffer }\end{DoxyParamCaption})}
+
+
+
+Implements the brute force algorithm using a distance matrix. 
+
+Implements the brute force algorithm on a tsp problem using a pre-\/generated distance matrix. IT D\+O\+ES N\+OT G\+E\+N\+E\+R\+A\+TE IT I\+T\+S\+E\+L\+F!. It uses an array where it cycles through every possible permutation and then stores the best one in the buffer passed as second argument. C\+A\+L\+LS A\+B\+O\+RT ON A\+L\+L\+O\+C\+A\+T\+I\+ON E\+R\+R\+O\+RS \mbox{\Hypertarget{brute__force_8c_ac70138609ef6aa6fabca57aca8681e83}\label{brute__force_8c_ac70138609ef6aa6fabca57aca8681e83}} 
+\index{brute\_force.c@{brute\_force.c}!compare@{compare}}
+\index{compare@{compare}!brute\_force.c@{brute\_force.c}}
+\doxysubsubsection{\texorpdfstring{compare()}{compare()}}
+{\footnotesize\ttfamily int compare (\begin{DoxyParamCaption}\item[{const void $\ast$}]{a,  }\item[{const void $\ast$}]{b }\end{DoxyParamCaption})}
+
+
+
+Used in next to sort the array. 
+
+For use in next to sort the array, compares two integers pointed by a and b. Simple $>$/$<$. \mbox{\Hypertarget{brute__force_8c_a0c4fac7519ffcba0cae22da386c1a296}\label{brute__force_8c_a0c4fac7519ffcba0cae22da386c1a296}} 
+\index{brute\_force.c@{brute\_force.c}!fillMatDist@{fillMatDist}}
+\index{fillMatDist@{fillMatDist}!brute\_force.c@{brute\_force.c}}
+\doxysubsubsection{\texorpdfstring{fillMatDist()}{fillMatDist()}}
+{\footnotesize\ttfamily void fill\+Mat\+Dist (\begin{DoxyParamCaption}\item[{double $\ast$$\ast$}]{mat\+Dist,  }\item[{int $\ast$$\ast$}]{tab\+Coord,  }\item[{unsigned int}]{size }\end{DoxyParamCaption})}
+
+
+
+Fills the array pointed by mat\+Dist with the distances between cities with coordinates in tab\+Coord. 
+
+Fills the P\+R\+E\+A\+L\+L\+O\+C\+A\+T\+ED matdist with the distances between every city so that mat\+Dist\mbox{[}i\mbox{]}\mbox{[}j\mbox{]} = mat\+Dist\mbox{[}j\mbox{]}\mbox{[}i\mbox{]} is the distance between city i and city j \mbox{\Hypertarget{brute__force_8c_ad9b9cb4068f30fbbfcc14425e6c56d5e}\label{brute__force_8c_ad9b9cb4068f30fbbfcc14425e6c56d5e}} 
+\index{brute\_force.c@{brute\_force.c}!next@{next}}
+\index{next@{next}!brute\_force.c@{brute\_force.c}}
+\doxysubsubsection{\texorpdfstring{next()}{next()}}
+{\footnotesize\ttfamily int next (\begin{DoxyParamCaption}\item[{int $\ast$}]{tab\+Tour,  }\item[{unsigned int}]{size }\end{DoxyParamCaption})}
+
+
+
+Generates the next permutation of integer sequence in lexicographic order. Tabtour is overwritten if there is a next one after it. 
+
+Takes an array filled with integers from 0 to size-\/1 and generate the next permutation in the lexicographic order. If the permutation passed is the last one, it does not change it and returns 1. Otherwise, it overwrites tab\+Tour and returns 0; \mbox{\Hypertarget{brute__force_8c_a1f901bebf07ff8ce586454e61dc719d9}\label{brute__force_8c_a1f901bebf07ff8ce586454e61dc719d9}} 
+\index{brute\_force.c@{brute\_force.c}!swap@{swap}}
+\index{swap@{swap}!brute\_force.c@{brute\_force.c}}
+\doxysubsubsection{\texorpdfstring{swap()}{swap()}}
+{\footnotesize\ttfamily void swap (\begin{DoxyParamCaption}\item[{int $\ast$}]{tab,  }\item[{int}]{i,  }\item[{int}]{j }\end{DoxyParamCaption})}
+
+
+
+Swaps two values in the tab array. 
+
+Used in next to ... wait for it ... swap two elements! I keep comin\textquotesingle{} up with \textquotesingle{}em don\textquotesingle{}t i? i$<$size \&\& j$<$size !!!!!!s \mbox{\Hypertarget{brute__force_8c_a1e8157557d0513caa82cca451bbe6737}\label{brute__force_8c_a1e8157557d0513caa82cca451bbe6737}} 
+\index{brute\_force.c@{brute\_force.c}!tourLength@{tourLength}}
+\index{tourLength@{tourLength}!brute\_force.c@{brute\_force.c}}
+\doxysubsubsection{\texorpdfstring{tourLength()}{tourLength()}}
+{\footnotesize\ttfamily double tour\+Length (\begin{DoxyParamCaption}\item[{int $\ast$}]{tab\+Tour,  }\item[{int $\ast$$\ast$}]{tab\+Coord,  }\item[{unsigned int}]{size }\end{DoxyParamCaption})}
+
+
+
+Computes the length of the tour pointed to by tab\+Tour using coordinates in tab\+Coord. 
+
+Computes the length of the tour passed in tab\+Tour by calculating every ditances useing the coordinates array. Last index in the tour is considered to be connected to the first one. \mbox{\Hypertarget{brute__force_8c_a0b8990115462da85aa0ddba5512fb3c3}\label{brute__force_8c_a0b8990115462da85aa0ddba5512fb3c3}} 
+\index{brute\_force.c@{brute\_force.c}!tourLengthMatrix@{tourLengthMatrix}}
+\index{tourLengthMatrix@{tourLengthMatrix}!brute\_force.c@{brute\_force.c}}
+\doxysubsubsection{\texorpdfstring{tourLengthMatrix()}{tourLengthMatrix()}}
+{\footnotesize\ttfamily double tour\+Length\+Matrix (\begin{DoxyParamCaption}\item[{int $\ast$}]{tab\+Tour,  }\item[{double $\ast$$\ast$}]{mat\+Dist,  }\item[{unsigned int}]{size }\end{DoxyParamCaption})}
+
+
+
+Computes the length of the tour pointed to by tab\+Tour using the distance matrix mat\+Dist. 
+
+Computes the length of the tour passed in tab\+Tour using the matrix of distances passed in mat\+Dist. Last index in the tour is considered to be connected to the first one. 

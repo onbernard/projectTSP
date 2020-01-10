@@ -1,0 +1,84 @@
+\hypertarget{arg__parser_8c}{}\doxysection{src/arg\+\_\+parser.c File Reference}
+\label{arg__parser_8c}\index{src/arg\_parser.c@{src/arg\_parser.c}}
+
+
+S\+O\+U\+R\+CE -\/ Parses the arguments given to main, entry point is parse\+Arguments, returns a struct \mbox{\hyperlink{structargs__t}{args\+\_\+t}} that contains the informations.  
+
+
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}arg\+\_\+parser.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}globals.\+h\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{arg__parser_8c_a0fe184fb37b3bca3ca279b496110838c}{parse\+Arguments}} (int argc, char $\ast$$\ast$argv, \mbox{\hyperlink{structargs__t}{args\+\_\+t}} $\ast$args\+Buffer)
+\begin{DoxyCompactList}\small\item\em Parses the main arguments, return the results in args\+Buffer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{arg__parser_8c_aff79c3928b80a7158391aec3a6608434}{init\+\_\+args\+\_\+t}} (\mbox{\hyperlink{structargs__t}{args\+\_\+t}} $\ast$args)
+\begin{DoxyCompactList}\small\item\em Initialize an \mbox{\hyperlink{structargs__t}{args\+\_\+t}} structure. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{arg__parser_8c_a137ccc16f20e7c4130812968c6557fda}{print\+\_\+args}} (F\+I\+LE $\ast$fp, \mbox{\hyperlink{structargs__t}{args\+\_\+t}} args)
+\begin{DoxyCompactList}\small\item\em Prints an \mbox{\hyperlink{structargs__t}{args\+\_\+t}} structure. \end{DoxyCompactList}\item 
+\+\_\+\+Bool \mbox{\hyperlink{arg__parser_8c_af53329b2aa6737daedd4144a848aeb44}{is\+Reserved\+Flag}} (char $\ast$str)
+\begin{DoxyCompactList}\small\item\em Check if str is -\/f/t/v/o/h/nz/bf/bfm/rw/2opt/ga. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+S\+O\+U\+R\+CE -\/ Parses the arguments given to main, entry point is parse\+Arguments, returns a struct \mbox{\hyperlink{structargs__t}{args\+\_\+t}} that contains the informations. 
+
+\begin{DoxyAuthor}{Author}
+B\+E\+R\+N\+A\+RD O. 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+december 2019 
+\end{DoxyDate}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{arg__parser_8c_aff79c3928b80a7158391aec3a6608434}\label{arg__parser_8c_aff79c3928b80a7158391aec3a6608434}} 
+\index{arg\_parser.c@{arg\_parser.c}!init\_args\_t@{init\_args\_t}}
+\index{init\_args\_t@{init\_args\_t}!arg\_parser.c@{arg\_parser.c}}
+\doxysubsubsection{\texorpdfstring{init\_args\_t()}{init\_args\_t()}}
+{\footnotesize\ttfamily void init\+\_\+args\+\_\+t (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structargs__t}{args\+\_\+t}} $\ast$}]{args }\end{DoxyParamCaption})}
+
+
+
+Initialize an \mbox{\hyperlink{structargs__t}{args\+\_\+t}} structure. 
+
+U\+S\+ED IN M\+A\+IN, N\+OT IN T\+H\+IS F\+I\+LE Set strings and solving methods to 0 on every byte Set parameters for the genetic algorithm to be 20 specimens, 200 generations and a mutation rate of .3 \mbox{\Hypertarget{arg__parser_8c_af53329b2aa6737daedd4144a848aeb44}\label{arg__parser_8c_af53329b2aa6737daedd4144a848aeb44}} 
+\index{arg\_parser.c@{arg\_parser.c}!isReservedFlag@{isReservedFlag}}
+\index{isReservedFlag@{isReservedFlag}!arg\_parser.c@{arg\_parser.c}}
+\doxysubsubsection{\texorpdfstring{isReservedFlag()}{isReservedFlag()}}
+{\footnotesize\ttfamily \+\_\+\+Bool is\+Reserved\+Flag (\begin{DoxyParamCaption}\item[{char $\ast$}]{str }\end{DoxyParamCaption})}
+
+
+
+Check if str is -\/f/t/v/o/h/nz/bf/bfm/rw/2opt/ga. 
+
+U\+S\+ED IN P\+A\+R\+S\+E\+A\+R\+G\+U\+M\+E\+N\+TS \mbox{\Hypertarget{arg__parser_8c_a0fe184fb37b3bca3ca279b496110838c}\label{arg__parser_8c_a0fe184fb37b3bca3ca279b496110838c}} 
+\index{arg\_parser.c@{arg\_parser.c}!parseArguments@{parseArguments}}
+\index{parseArguments@{parseArguments}!arg\_parser.c@{arg\_parser.c}}
+\doxysubsubsection{\texorpdfstring{parseArguments()}{parseArguments()}}
+{\footnotesize\ttfamily int parse\+Arguments (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$$\ast$}]{argv,  }\item[{\mbox{\hyperlink{structargs__t}{args\+\_\+t}} $\ast$}]{args\+Buffer }\end{DoxyParamCaption})}
+
+
+
+Parses the main arguments, return the results in args\+Buffer. 
+
+T\+H\+IS IS T\+HE E\+N\+T\+RY P\+O\+I\+NT TO T\+HE A\+R\+G\+U\+M\+E\+NT P\+A\+R\+S\+ER. IT I\+T\+E\+R\+A\+T\+ES O\+V\+ER A\+LL A\+R\+G\+U\+M\+E\+N\+TS, F\+I\+L\+L\+I\+NG T\+HE B\+U\+F\+F\+ER AS IT D\+O\+ES A\+ND S\+T\+O\+P\+P\+I\+NG W\+H\+EN IT E\+N\+C\+O\+U\+N\+T\+E\+RS A F\+O\+R\+M\+A\+T\+T\+I\+NG E\+R\+R\+OR.
+
+F\+OR GA, Z\+E\+RO, O\+NE, T\+WO, OR T\+H\+R\+EE F\+O\+L\+L\+O\+W\+I\+NG N\+U\+M\+E\+R\+I\+C\+AL A\+R\+G\+U\+M\+E\+N\+TS A\+RE A\+L\+L\+O\+W\+ED
+
+IF -\/V F\+L\+AG IS G\+I\+V\+EN, global variable verbose is set to 1
+
+L\+E\+A\+V\+ES T\+O\+U\+R\+F\+I\+L\+E\+N\+A\+ME, L\+O\+G\+F\+I\+L\+E\+N\+A\+ME A\+ND O\+U\+T\+P\+U\+T\+F\+I\+L\+E\+N\+A\+ME U\+N\+C\+H\+A\+N\+G\+ED W\+H\+EN U\+N\+S\+P\+E\+C\+I\+F\+I\+ED \mbox{\Hypertarget{arg__parser_8c_a137ccc16f20e7c4130812968c6557fda}\label{arg__parser_8c_a137ccc16f20e7c4130812968c6557fda}} 
+\index{arg\_parser.c@{arg\_parser.c}!print\_args@{print\_args}}
+\index{print\_args@{print\_args}!arg\_parser.c@{arg\_parser.c}}
+\doxysubsubsection{\texorpdfstring{print\_args()}{print\_args()}}
+{\footnotesize\ttfamily void print\+\_\+args (\begin{DoxyParamCaption}\item[{F\+I\+LE $\ast$}]{fp,  }\item[{\mbox{\hyperlink{structargs__t}{args\+\_\+t}}}]{args }\end{DoxyParamCaption})}
+
+
+
+Prints an \mbox{\hyperlink{structargs__t}{args\+\_\+t}} structure. 
+
+F\+OR D\+E\+B\+U\+G\+G\+I\+NG A\+ND V\+E\+R\+B\+O\+SE M\+O\+DE 

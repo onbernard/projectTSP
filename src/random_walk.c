@@ -19,14 +19,14 @@
 /// Stores the best found tour in tourBuffer.
 /// CALLS ABORT ON ALLOCATING ERRORS
 double randomWalkSolver(instance_t *instance, int *tourBuffer){
-    unsigned int dim = instance->dimension;
+    unsigned int dim = instance->dimension; // dealoc
     int *tabTour = (int *) malloc(dim * sizeof(int)); // WHERE TO STORE THE TOUR
     if(tabTour == NULL){
         fprintf(stderr, "ERROR : in nearestNeighbourSolver : error while allocating tabTour\nAborting...\n");
         abort();
     }
     int *freeCities = (int *) malloc(dim * sizeof(int)); // TO KNOW WICH CITY HAS BEEN SELECTED
-    if(freeCities == NULL){
+    if(freeCities == NULL){ // dealoc
         fprintf(stderr, "ERROR : in nearestNeighbourSolver : error while allocating freeCities\nAborting...\n");
         abort();
     }
@@ -37,8 +37,10 @@ double randomWalkSolver(instance_t *instance, int *tourBuffer){
     time_t t;
     srand((unsigned) time(&t));
 
+    tabTour[0] = 0;
+    freeCities[0] = 0;
 
-    for(int i=0; i<dim; i++){
+    for(int i=1; i<dim; i++){
         // CHOSE A CITY RANDOMLY
         int city = rand() % dim;
         while( freeCities[city] == 0 ){

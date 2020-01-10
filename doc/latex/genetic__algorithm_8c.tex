@@ -1,0 +1,193 @@
+\hypertarget{genetic__algorithm_8c}{}\doxysection{src/genetic\+\_\+algorithm.c File Reference}
+\label{genetic__algorithm_8c}\index{src/genetic\_algorithm.c@{src/genetic\_algorithm.c}}
+
+
+S\+O\+U\+R\+CE -\/ Implements the genetic algorithm to solve a tsp problem.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}genetic\+\_\+algorithm.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}brute\+\_\+force.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}globals.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}T\+S\+P\+\_\+parser.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}random\+\_\+walk.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}nearest\+\_\+neighbour.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tools.\+h\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{genetic__algorithm_8c_a2eec73cf59202899473160bd4689fe22}{genetic\+Algorithm\+Solver}} (\mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} $\ast$instance, int $\ast$tour\+Buffer, int n\+Specimens, int n\+Generations, double mutation\+Rate)
+\begin{DoxyCompactList}\small\item\em Implements the genetic algorithm to solve the tsp problem represented by instance. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{genetic__algorithm_8c_a6f2686d60f68d89b6e65eb99fd7f6d55}{i\+Min\+In\+Array}} (double $\ast$arr, unsigned int size)
+\begin{DoxyCompactList}\small\item\em Returns the index of the minimum integer value in arr. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{genetic__algorithm_8c_a91b70f576b609d322118292fe79c09bc}{i\+Max\+In\+Array}} (double $\ast$arr, unsigned int size)
+\begin{DoxyCompactList}\small\item\em Returns the index of the maximum integer value in arr. \end{DoxyCompactList}\item 
+\+\_\+\+Bool \mbox{\hyperlink{genetic__algorithm_8c_aef8d17a962f3967b07731dee95b20b72}{roll\+Dice}} (double chance)
+\begin{DoxyCompactList}\small\item\em Returns 1 in chance$\ast$100 \% of cases. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{genetic__algorithm_8c_a3acd007b2897acf9d8ca582f2fde86ba}{mute}} (int $\ast$tab\+Tour, unsigned int dim)
+\begin{DoxyCompactList}\small\item\em Swap randomly two cities in tour array. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{genetic__algorithm_8c_a665e89a96462f6f439611951287aeb34}{D\+PX}} (int $\ast$$\ast$tab\+Coord, int $\ast$parent1, int $\ast$parent2, int $\ast$child\+Buffer, unsigned int size)
+\begin{DoxyCompactList}\small\item\em Implements the D\+PX crossing between tours parent1 and parent2. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{genetic__algorithm_8c_ada1674ce01262e49648a05adfde4cd52}{index\+Of\+Node}} (int node, int $\ast$tab\+Tour, unsigned int size)
+\begin{DoxyCompactList}\small\item\em Returns the index of city node in a tour array. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{genetic__algorithm_8c_aa1af04fc9375c1543e17e270f23927e3}{is\+Neighbour}} (int index, int node, int $\ast$tab\+Tour, unsigned int size)
+\begin{DoxyCompactList}\small\item\em Returns 1 if city node is to the left or right of index index in array tour. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+S\+O\+U\+R\+CE -\/ Implements the genetic algorithm to solve a tsp problem. 
+
+\begin{DoxyAuthor}{Author}
+B\+E\+R\+N\+A\+RD O. 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+december 2019 
+\end{DoxyDate}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{genetic__algorithm_8c_a665e89a96462f6f439611951287aeb34}\label{genetic__algorithm_8c_a665e89a96462f6f439611951287aeb34}} 
+\index{genetic\_algorithm.c@{genetic\_algorithm.c}!DPX@{DPX}}
+\index{DPX@{DPX}!genetic\_algorithm.c@{genetic\_algorithm.c}}
+\doxysubsubsection{\texorpdfstring{DPX()}{DPX()}}
+{\footnotesize\ttfamily int D\+PX (\begin{DoxyParamCaption}\item[{int $\ast$$\ast$}]{tab\+Coord,  }\item[{int $\ast$}]{parent1,  }\item[{int $\ast$}]{parent2,  }\item[{int $\ast$}]{child\+Buffer,  }\item[{unsigned int}]{size }\end{DoxyParamCaption})}
+
+
+
+Implements the D\+PX crossing between tours parent1 and parent2. 
+
+C\+A\+U\+T\+I\+ON S\+P\+A\+G\+E\+T\+TI C\+O\+DE A\+H\+E\+AD First city of child is always the first city of parent1 to keep consistency with the rest of the code \mbox{\Hypertarget{genetic__algorithm_8c_a2eec73cf59202899473160bd4689fe22}\label{genetic__algorithm_8c_a2eec73cf59202899473160bd4689fe22}} 
+\index{genetic\_algorithm.c@{genetic\_algorithm.c}!geneticAlgorithmSolver@{geneticAlgorithmSolver}}
+\index{geneticAlgorithmSolver@{geneticAlgorithmSolver}!genetic\_algorithm.c@{genetic\_algorithm.c}}
+\doxysubsubsection{\texorpdfstring{geneticAlgorithmSolver()}{geneticAlgorithmSolver()}}
+{\footnotesize\ttfamily double genetic\+Algorithm\+Solver (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} $\ast$}]{instance,  }\item[{int $\ast$}]{tour\+Buffer,  }\item[{int}]{n\+Specimens,  }\item[{int}]{n\+Generations,  }\item[{double}]{mutation\+Rate }\end{DoxyParamCaption})}
+
+
+
+Implements the genetic algorithm to solve the tsp problem represented by instance. 
+
+Implements the genetic algorithm on the tsp problem represented by instance The numbers of breeding is generated randomly each generation All the complexity and spagetti is in D\+PX C\+A\+L\+LS A\+B\+O\+RT ON A\+L\+L\+O\+C\+A\+T\+I\+ON E\+R\+R\+O\+RS \mbox{\Hypertarget{genetic__algorithm_8c_a91b70f576b609d322118292fe79c09bc}\label{genetic__algorithm_8c_a91b70f576b609d322118292fe79c09bc}} 
+\index{genetic\_algorithm.c@{genetic\_algorithm.c}!iMaxInArray@{iMaxInArray}}
+\index{iMaxInArray@{iMaxInArray}!genetic\_algorithm.c@{genetic\_algorithm.c}}
+\doxysubsubsection{\texorpdfstring{iMaxInArray()}{iMaxInArray()}}
+{\footnotesize\ttfamily int i\+Max\+In\+Array (\begin{DoxyParamCaption}\item[{double $\ast$}]{arr,  }\item[{unsigned int}]{size }\end{DoxyParamCaption})}
+
+
+
+Returns the index of the maximum integer value in arr. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em arr} & \+: A tour array \\
+\hline
+{\em size} & \+: The size of the tour array\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The index of the maximum integer value in arr 
+\end{DoxyReturn}
+\mbox{\Hypertarget{genetic__algorithm_8c_a6f2686d60f68d89b6e65eb99fd7f6d55}\label{genetic__algorithm_8c_a6f2686d60f68d89b6e65eb99fd7f6d55}} 
+\index{genetic\_algorithm.c@{genetic\_algorithm.c}!iMinInArray@{iMinInArray}}
+\index{iMinInArray@{iMinInArray}!genetic\_algorithm.c@{genetic\_algorithm.c}}
+\doxysubsubsection{\texorpdfstring{iMinInArray()}{iMinInArray()}}
+{\footnotesize\ttfamily int i\+Min\+In\+Array (\begin{DoxyParamCaption}\item[{double $\ast$}]{arr,  }\item[{unsigned int}]{size }\end{DoxyParamCaption})}
+
+
+
+Returns the index of the minimum integer value in arr. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em arr} & \+: A tour array \\
+\hline
+{\em size} & \+: The size of the tour array\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The index of the minimum integer value in arr 
+\end{DoxyReturn}
+\mbox{\Hypertarget{genetic__algorithm_8c_ada1674ce01262e49648a05adfde4cd52}\label{genetic__algorithm_8c_ada1674ce01262e49648a05adfde4cd52}} 
+\index{genetic\_algorithm.c@{genetic\_algorithm.c}!indexOfNode@{indexOfNode}}
+\index{indexOfNode@{indexOfNode}!genetic\_algorithm.c@{genetic\_algorithm.c}}
+\doxysubsubsection{\texorpdfstring{indexOfNode()}{indexOfNode()}}
+{\footnotesize\ttfamily int index\+Of\+Node (\begin{DoxyParamCaption}\item[{int}]{node,  }\item[{int $\ast$}]{tab\+Tour,  }\item[{unsigned int}]{size }\end{DoxyParamCaption})}
+
+
+
+Returns the index of city node in a tour array. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em node} & \+: The number of the city \\
+\hline
+{\em tab\+Tour} & \+: The tour array where to search \\
+\hline
+{\em size} & \+: The size of the tour array\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 in chance$\ast$100 \% of cases 
+\end{DoxyReturn}
+\mbox{\Hypertarget{genetic__algorithm_8c_aa1af04fc9375c1543e17e270f23927e3}\label{genetic__algorithm_8c_aa1af04fc9375c1543e17e270f23927e3}} 
+\index{genetic\_algorithm.c@{genetic\_algorithm.c}!isNeighbour@{isNeighbour}}
+\index{isNeighbour@{isNeighbour}!genetic\_algorithm.c@{genetic\_algorithm.c}}
+\doxysubsubsection{\texorpdfstring{isNeighbour()}{isNeighbour()}}
+{\footnotesize\ttfamily int is\+Neighbour (\begin{DoxyParamCaption}\item[{int}]{index,  }\item[{int}]{node,  }\item[{int $\ast$}]{tab\+Tour,  }\item[{unsigned int}]{size }\end{DoxyParamCaption})}
+
+
+
+Returns 1 if city node is to the left or right of index index in array tour. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & \+: The index of the position \\
+\hline
+{\em node} & \+: The number of the city \\
+\hline
+{\em tab\+Tour} & \+: The tour array where to search \\
+\hline
+{\em size} & \+: The size of the tour array\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 in chance$\ast$100 \% of cases 
+\end{DoxyReturn}
+\mbox{\Hypertarget{genetic__algorithm_8c_a3acd007b2897acf9d8ca582f2fde86ba}\label{genetic__algorithm_8c_a3acd007b2897acf9d8ca582f2fde86ba}} 
+\index{genetic\_algorithm.c@{genetic\_algorithm.c}!mute@{mute}}
+\index{mute@{mute}!genetic\_algorithm.c@{genetic\_algorithm.c}}
+\doxysubsubsection{\texorpdfstring{mute()}{mute()}}
+{\footnotesize\ttfamily void mute (\begin{DoxyParamCaption}\item[{int $\ast$}]{tab\+Tour,  }\item[{unsigned int}]{dim }\end{DoxyParamCaption})}
+
+
+
+Swap randomly two cities in tour array. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tab\+Tour} & \+: A tour array \\
+\hline
+{\em dim} & \+: The size of the tour array \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{genetic__algorithm_8c_aef8d17a962f3967b07731dee95b20b72}\label{genetic__algorithm_8c_aef8d17a962f3967b07731dee95b20b72}} 
+\index{genetic\_algorithm.c@{genetic\_algorithm.c}!rollDice@{rollDice}}
+\index{rollDice@{rollDice}!genetic\_algorithm.c@{genetic\_algorithm.c}}
+\doxysubsubsection{\texorpdfstring{rollDice()}{rollDice()}}
+{\footnotesize\ttfamily \+\_\+\+Bool roll\+Dice (\begin{DoxyParamCaption}\item[{double}]{chance }\end{DoxyParamCaption})}
+
+
+
+Returns 1 in chance$\ast$100 \% of cases. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em chance} & \+: The chance of getting a 1\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 in chance$\ast$100 \% of cases 
+\end{DoxyReturn}

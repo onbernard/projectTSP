@@ -95,15 +95,17 @@ int parseTSPfile(FILE *fp, instance_t *instance, _Bool nz){
                 specs_FLAGS += DIMENSION_F;
                 break;
             case EDGE_WEIGHT_TYPE_F:
-                if( strcmp(secondHalf, "EUC_2D") != 0 ){
-                    fprintf(stderr, "TSP FILE FORMAT ERROR : edge weight type has to be EUC_2D\n");
+                if( strcmp(secondHalf, "EUC_2D") != 0 && strcmp(secondHalf, "ATT") != 0 ){
+                    fprintf(stderr, "TSP FILE FORMAT ERROR : edge weight type has to be EUC_2D or ATT\n");
                     return -1;
                 }
                 strcpy(instance->edge_type, "EUC_2D");
                 specs_FLAGS += EDGE_WEIGHT_TYPE_F;
                 break;
             case COMMENT_F:
-                printf("Comment : %s\n", secondHalf);
+                if(verbose){
+                    fprintf(logfileP, "Comment : %s\n", secondHalf);
+                }
                 break;
             default:
                 fprintf(stderr, "TOUR FILE FORMAT ERROR : unexpected keyword : %s\n", firstHalf);

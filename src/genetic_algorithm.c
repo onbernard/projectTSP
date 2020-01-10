@@ -20,6 +20,11 @@
  */
 
 
+
+/// Implements the genetic algorithm on the tsp problem represented by instance
+/// The numbers of breeding is generated randomly each generation
+/// All the complexity and spagetti is in DPX
+/// CALLS ABORT ON ALLOCATION ERRORS
 double geneticAlgorithmSolver(instance_t *instance, int *tourBuffer, int nSpecimens, int nGenerations, double mutationRate){
     if(verbose){
         fprintf(logfileP, "========== IN GA ==========\n");
@@ -35,18 +40,18 @@ double geneticAlgorithmSolver(instance_t *instance, int *tourBuffer, int nSpecim
     // ========================== INITIALIZATION OF POPULATION ====================================================================
 
     double *lengthsArr = (double *) malloc(nSpecimens * sizeof(double)); // POPULATION LENGTHS ARRAY
-    if(lengthsArr == NULL){
+    if(lengthsArr == NULL){ // dealoc
         fprintf(stderr, "ERROR : in geneticAlgorithmSolver : error while allocating lengthsArr\nAborting...\n");
         abort();
     }
     int **population = (int **) malloc(nSpecimens * sizeof(int *)); // POPULATION ARRAY
-    if(population == NULL){
+    if(population == NULL){ // dealoc
         fprintf(stderr, "ERROR : in geneticAlgorithmSolver : error while allocating population\nAborting...\n");
         abort();
     }
     for(int i=0; i<nSpecimens; i++){
         population[i] = (int *) malloc(dim * sizeof(int)); // AN INDIVIDUAL
-        if(population[i] == NULL){
+        if(population[i] == NULL){ // dealoc
             fprintf(stderr, "ERROR : in geneticAlgorithmSolver : error while allocating population[%d]\nAborting...\n", i);
             abort();
         }
@@ -59,17 +64,12 @@ double geneticAlgorithmSolver(instance_t *instance, int *tourBuffer, int nSpecim
     }
 
     int *childBuffer = (int *) malloc(dim * sizeof(int)); // WHERE BABIES ARE MADE
-    if(childBuffer == NULL){
+    if(childBuffer == NULL){ // dealoc
         fprintf(stderr, "ERROR : in geneticAlgorithmSolver : error while allocating childBuffer\nAborting...\n");
         abort();
     }
     // ===========================================================================================================================
     
-    if(verbose){
-        fprintf(logfileP, "Initialization of population...\nWorse one is:\n");
-        printTour(population[worseIndex], ' ', dim);
-        fprintf(logfileP, "With length %lf\n\n", worseLength);
-    }
     // TODO PRINT BEST
 
     // =========================== ITERATE OVER GENERATIONS =========================================================
@@ -78,12 +78,13 @@ double geneticAlgorithmSolver(instance_t *instance, int *tourBuffer, int nSpecim
         int numberOfCrossBreeding = rand() % (nSpecimens/2); // NOT EVERYONE GETS LAID
         if(verbose){
             fprintf(logfileP, "Generation %d, there will be %d breedings\n", i, numberOfCrossBreeding);
+            fprintf(logfileP, "Worse specimen has length %lf:\n", worseLength);
         }
         for(int k=0; k<numberOfCrossBreeding; k++){ // BREEDING SEASON!!!!
             int parent1 = rand() % nSpecimens; // YOU GET A BABY
             int parent2 = rand() % nSpecimens; // YOU GET A BABY
             while(parent2 == parent1){
-                parent2 = rand() % dim;
+                parent2 = rand() % nSpecimens;
             }
             if( DPX(instance->tabCoord, population[parent1], population[parent2], childBuffer, dim) < 0 ){ // TODO
                 fprintf(stderr, "ERROR : in geneticAlgorithmSolver : error in DPX\n");
@@ -100,6 +101,7 @@ double geneticAlgorithmSolver(instance_t *instance, int *tourBuffer, int nSpecim
             lengthsArr[worseIndex] = childLength;
             worseIndex = iMaxInArray(lengthsArr, nSpecimens);
             worseLength = lengthsArr[worseIndex];
+
         }
     }
 
@@ -120,6 +122,7 @@ double geneticAlgorithmSolver(instance_t *instance, int *tourBuffer, int nSpecim
     return bestLength;
 }
 
+/// Returns the index of the minimum integer value in arr
 int iMinInArray(double *arr, unsigned int size){
     double min = arr[0];
     int iMin = 0;
@@ -132,6 +135,7 @@ int iMinInArray(double *arr, unsigned int size){
     return iMin;
 }
 
+/// Returns the index of the maximum integer value in arr
 int iMaxInArray(double *arr, unsigned int size){
     double max = arr[0];
     int iMax = 0;
@@ -144,6 +148,7 @@ int iMaxInArray(double *arr, unsigned int size){
     return iMax;
 }
 
+/// Returns 1 in chance*100 % of cases
 _Bool rollDice(double chance){
     int value = (rand()%100)+1;
     if(value < 100 * chance){
@@ -152,6 +157,7 @@ _Bool rollDice(double chance){
     return 0;
 }
 
+/// Swap randomly two cities in tour array
 void mute(int *tabTour, unsigned int dim){
     int edge1 = rand() % dim;
     while(edge1 == 0){
@@ -166,8 +172,10 @@ void mute(int *tabTour, unsigned int dim){
     tabTour[edge2] = temp;
 }
 
+/// CAUTION SPAGETTI CODE AHEAD
+/// First city of child is always the first city of parent1 to keep consistency with the rest of the code
 int DPX(int **tabCoord, int *parent1, int *parent2, int *childBuffer, unsigned int size){
-    int *extremities = (int *) malloc(2 * size * sizeof(int));
+    int *extremities = (int *) malloc(2 * size * sizeof(int)); // dealoc
     if(extremities == NULL){
         fprintf(stderr, "ERROR : in DPX : error while allocating extremities\nAborting...\n");
         abort();
@@ -316,10 +324,7 @@ int DPX(int **tabCoord, int *parent1, int *parent2, int *childBuffer, unsigned i
     return 1;
 }
 
-//======================================================
-//======================================================
-
-
+/// Returns the index of city node in a tour array
 int indexOfNode(int node, int *tabTour, unsigned int size){
     for(int i=0; i<size; i++){
         if(tabTour[i] == node){
@@ -329,6 +334,8 @@ int indexOfNode(int node, int *tabTour, unsigned int size){
     return -1;
 }
 
+
+/// Returns 1 if city node is to the left or right of index index in array tour
 int isNeighbour(int index, int node, int *tabTour, unsigned int size){
     if( tabTour[(index+1)%size] == node ){
         return (index+1) % size;
@@ -341,76 +348,3 @@ int isNeighbour(int index, int node, int *tabTour, unsigned int size){
     }
     return -1;
 }
-
-_Bool containsEdge(int A, int B, int *tabTour, unsigned int size){
-    for(int i=1; i<size; i++){
-        if( ( tabTour[i-1] == A && tabTour[i] == B ) || ( tabTour[i-1] == B && tabTour[i] == A ) ){
-            return 1;
-        }
-    }
-    return 0;
-}/*
-void test1(){
-    int A[10] = {5, 9, 3, 1, 2, 8, 0, 6, 7, 4};
-    int B[10] = {1, 2, 5, 3, 9, 4, 8, 6, 0, 7};
-    int C[10];
-    int tabCoord[10][2] = { {22, 43}, {45, 65}, {59, 53}, {76, 93}, {44, 64}, {765, 43}, {43, 63}, {60, 54}, {61, 55}, {62, 56} };
-    DPX(tabCoord, A, B, C, 10);
-
-    printf("\n");
-    for(int i=0; i<10; i++){
-        printf("%d %d\n", tabCoord[i][0], tabCoord[i][1]);
-    }
-    printf("\n\n");
-
-    printf("\n");
-    for(int i=0; i<10; i++){
-        printf("%d ", A[i]);
-    }
-    printf("\n");
-
-    printf("\n");
-    for(int i=0; i<10; i++){
-        printf("%d ", B[i]);
-    }
-    printf("\n");
-
-    printf("\n");
-    for(int i=0; i<10; i++){
-        printf("%d ", C[i]);
-    }
-    printf("\n");
-}
-
-void test2(){
-    int A[10] = {5, 9, 3, 1, 2, 8, 0, 6, 7, 4};
-    int B[10] = {3, 2, 1, 8, 0, 6, 7, 4, 5, 9};
-    int C[10];
-    int tabCoord[10][2] = { {22, 43}, {45, 65}, {59, 53}, {76, 93}, {44, 64}, {765, 43}, {43, 63}, {60, 54}, {61, 55}, {62, 56} };
-    DPX(tabCoord, A, B, C, 10);
-
-    printf("\n");
-    for(int i=0; i<10; i++){
-        printf("%d %d\n", tabCoord[i][0], tabCoord[i][1]);
-    }
-    printf("\n\n");
-
-    printf("\n");
-    for(int i=0; i<10; i++){
-        printf("%d ", A[i]);
-    }
-    printf("\n");
-
-    printf("\n");
-    for(int i=0; i<10; i++){
-        printf("%d ", B[i]);
-    }
-    printf("\n");
-
-    printf("\n");
-    for(int i=0; i<10; i++){
-        printf("%d ", C[i]);
-    }
-    printf("\n");
-}
-*/

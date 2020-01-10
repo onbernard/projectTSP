@@ -135,7 +135,7 @@ int parseArguments(int argc, char **argv, args_t *argsBuffer){
         else if( strcmp(argv[i], "-ga") == 0 ){
             argsBuffer->solvingMethods += GA;
             ++i;
-            if( i<argc && atoi( argv[i])>0 ){
+            if( i<argc && atoi( argv[i])>1 ){
                 argsBuffer->ga_nSpecimens = atoi(argv[i]);
                 ++i;
                 if( i<argc && atoi( argv[i])>0 ){

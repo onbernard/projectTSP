@@ -1,0 +1,69 @@
+\hypertarget{nearest__neighbour_8c}{}\doxysection{src/nearest\+\_\+neighbour.c File Reference}
+\label{nearest__neighbour_8c}\index{src/nearest\_neighbour.c@{src/nearest\_neighbour.c}}
+
+
+S\+O\+U\+R\+CE -\/ Implements the nearest neighbour algorithm to solve a tsp problem.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}nearest\+\_\+neighbour.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}T\+S\+P\+\_\+parser.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}globals.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}brute\+\_\+force.\+h\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{nearest__neighbour_8c_a53650a4208ccbb193250f6d28e3cebe6}{nearest\+Neighbour\+Solver}} (\mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} $\ast$instance, int $\ast$tour\+Buffer)
+\begin{DoxyCompactList}\small\item\em Implements the nearest neighbour algorithm to solve the tsp problem represented by instance. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{nearest__neighbour_8c_a5f2e71223c9e314e12193861dc2200b1}{find\+Nearest\+Neighbour}} (int cityA, int $\ast$$\ast$tab\+Coord, int $\ast$free\+Cities, unsigned int size)
+\begin{DoxyCompactList}\small\item\em Finds the city number that is closest to the city with index cityA and whose value in free\+Cities is 1. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{nearest__neighbour_8c_a16c4c78b86b2d251295e04d6c72e8836}{distance}} (int cityA, int cityB, int $\ast$$\ast$tab\+Coord)
+\begin{DoxyCompactList}\small\item\em Computes the distance between cityA and cityB using the coordinates two dimensionnal array tab\+Coord. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+S\+O\+U\+R\+CE -\/ Implements the nearest neighbour algorithm to solve a tsp problem. 
+
+\begin{DoxyAuthor}{Author}
+B\+E\+R\+N\+A\+RD O. 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+december 2019 
+\end{DoxyDate}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{nearest__neighbour_8c_a16c4c78b86b2d251295e04d6c72e8836}\label{nearest__neighbour_8c_a16c4c78b86b2d251295e04d6c72e8836}} 
+\index{nearest\_neighbour.c@{nearest\_neighbour.c}!distance@{distance}}
+\index{distance@{distance}!nearest\_neighbour.c@{nearest\_neighbour.c}}
+\doxysubsubsection{\texorpdfstring{distance()}{distance()}}
+{\footnotesize\ttfamily double distance (\begin{DoxyParamCaption}\item[{int}]{cityA,  }\item[{int}]{cityB,  }\item[{int $\ast$$\ast$}]{tab\+Coord }\end{DoxyParamCaption})}
+
+
+
+Computes the distance between cityA and cityB using the coordinates two dimensionnal array tab\+Coord. 
+
+Computes the distance between cityA and cityB using coordinates in tab\+Coord. \mbox{\Hypertarget{nearest__neighbour_8c_a5f2e71223c9e314e12193861dc2200b1}\label{nearest__neighbour_8c_a5f2e71223c9e314e12193861dc2200b1}} 
+\index{nearest\_neighbour.c@{nearest\_neighbour.c}!findNearestNeighbour@{findNearestNeighbour}}
+\index{findNearestNeighbour@{findNearestNeighbour}!nearest\_neighbour.c@{nearest\_neighbour.c}}
+\doxysubsubsection{\texorpdfstring{findNearestNeighbour()}{findNearestNeighbour()}}
+{\footnotesize\ttfamily int find\+Nearest\+Neighbour (\begin{DoxyParamCaption}\item[{int}]{cityA,  }\item[{int $\ast$$\ast$}]{tab\+Coord,  }\item[{int $\ast$}]{free\+Cities,  }\item[{unsigned int}]{size }\end{DoxyParamCaption})}
+
+
+
+Finds the city number that is closest to the city with index cityA and whose value in free\+Cities is 1. 
+
+Finds the city that is closest to cityA that is not yet selected F\+R\+E\+E\+C\+I\+T\+I\+ES C\+O\+N\+T\+A\+I\+NS AT L\+E\+A\+ST O\+NE F\+R\+EE C\+I\+TY, unspecified behavious otherwise... \mbox{\Hypertarget{nearest__neighbour_8c_a53650a4208ccbb193250f6d28e3cebe6}\label{nearest__neighbour_8c_a53650a4208ccbb193250f6d28e3cebe6}} 
+\index{nearest\_neighbour.c@{nearest\_neighbour.c}!nearestNeighbourSolver@{nearestNeighbourSolver}}
+\index{nearestNeighbourSolver@{nearestNeighbourSolver}!nearest\_neighbour.c@{nearest\_neighbour.c}}
+\doxysubsubsection{\texorpdfstring{nearestNeighbourSolver()}{nearestNeighbourSolver()}}
+{\footnotesize\ttfamily double nearest\+Neighbour\+Solver (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} $\ast$}]{instance,  }\item[{int $\ast$}]{tour\+Buffer }\end{DoxyParamCaption})}
+
+
+
+Implements the nearest neighbour algorithm to solve the tsp problem represented by instance. 
+
+Implements the nearest neighbour algorithm to solve the tsp problem represented by the \mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} instance structure Stores the best found tour in the array pointed by tour\+Buffer and returns its length as a double. C\+A\+L\+LS A\+B\+O\+RT ON A\+L\+L\+O\+C\+A\+T\+I\+NG E\+R\+R\+O\+RS 

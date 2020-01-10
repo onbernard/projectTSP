@@ -20,7 +20,7 @@
 /// CALLS ABORT ON ALLOCATION ERRORS
 double bruteForceMatrix(instance_t *instance, int *tourBuffer){
     if(verbose){
-        fprintf(logfileP, "========== IN BF ==========\n");
+        fprintf(logfileP, "========== IN BFM ==========\n");
     }
 
     unsigned dim = instance->dimension;
@@ -32,13 +32,13 @@ double bruteForceMatrix(instance_t *instance, int *tourBuffer){
     
 
     // WHERE TO STORE THE CURRENT BEST
-    int *minTour = (int *) malloc( dim * sizeof(int) );
+    int *minTour = (int *) malloc( dim * sizeof(int) ); // dealoc
     if(minTour == NULL){
         fprintf(stderr, "ERROR : in bruteForceMatrix : error while allocating minTour.\nAborting...\n");
         abort();
     }
     // WHERE TO STORE THE TOURS
-    int *tabTour = (int *) malloc( dim * sizeof(int) );
+    int *tabTour = (int *) malloc( dim * sizeof(int) ); // dealoc
     if(tabTour == NULL){
         fprintf(stderr, "ERROR : in bruteForceMatrix : error while allocating tabTour.\nAborting...\n");
         abort();
@@ -67,7 +67,7 @@ double bruteForceMatrix(instance_t *instance, int *tourBuffer){
     free(tabTour);
     if(verbose){
         fprintf(logfileP, "With %d cities, %llu permutations were checked (this number might overflow)\n", dim, n);
-        fprintf(logfileP, "========== OUT BF ==========\n");
+        fprintf(logfileP, "========== OUT BFM ==========\n");
     }
     return minLength;
 }
@@ -75,22 +75,25 @@ double bruteForceMatrix(instance_t *instance, int *tourBuffer){
 /// Implements the brute force algorithm on a tsp problem calculating the distances on the fly.
 /// It uses an array where it cycles through every possible permutation and then stores the 
 /// best one in the buffer passed as second argument.
-/// CALLS ABORT ON ALLOCATING ERRORS
+/// CALLS ABORT ON ALLOCATION ERRORS
 double bruteForce(instance_t *instance, int *tourBuffer){
     // basically a copy of the one above but i don't like functions with too many arguments so now there's to of em
+    if(verbose){
+        fprintf(logfileP, "========== IN BF ==========\n");
+    }
     unsigned dim = instance->dimension;
 
     double length = 0;
     double minLength = 0;
 
     // WHERE TO STORE THE CURRENT BEST
-    int *minTour = (int *) malloc( dim * sizeof(int) );
+    int *minTour = (int *) malloc( dim * sizeof(int) ); // dealoc
     if(minTour == NULL){
         fprintf(stderr, "ERROR : in bruteForceMatrix : error while allocating minTour.\nAborting...\n");
         abort();
     }
     // WHERE TO STORE THE TOURS
-    int *tabTour = (int *) malloc( dim * sizeof(int) );
+    int *tabTour = (int *) malloc( dim * sizeof(int) ); // dealoc
     if(tabTour == NULL){
         fprintf(stderr, "ERROR : in bruteForceMatrix : error while allocating tabTour.\nAborting...\n");
         abort();
@@ -102,6 +105,7 @@ double bruteForce(instance_t *instance, int *tourBuffer){
     minLength = tourLength(tabTour, instance->tabCoord, instance->dimension);
 
     int end = 0;
+    unsigned long long int n=1;
     while( !end ){ // CYCLES THROUGH EVERY COMBINATION
         length = tourLength(tabTour, instance->tabCoord, instance->dimension);
         if(length < minLength ){
@@ -109,12 +113,17 @@ double bruteForce(instance_t *instance, int *tourBuffer){
             memcpy(minTour, tabTour, dim*sizeof(tabTour[0]));
         }
         end = next(tabTour, dim);
+        n++;
     }
 
     // COPY INTO BUFFER
     memcpy(tourBuffer, minTour, dim*sizeof(minTour[0]));
     free(minTour); // MURICA
     free(tabTour); // LAND OF THE DEALLOC
+    if(verbose){
+        fprintf(logfileP, "With %d cities, %llu permutations were checked (this number might overflow)\n", dim, n);
+        fprintf(logfileP, "========== OUT BF ==========\n");
+    }
     return minLength;
 }
 

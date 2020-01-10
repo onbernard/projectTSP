@@ -29,7 +29,7 @@ double twoOptSolver(instance_t *instance, int *tourBuffer){
     }
 
     int *tabTour = (int *) malloc(instance->dimension * sizeof(int)); // WHERE TO STORES THE TOUR
-    if(tabTour == NULL){
+    if(tabTour == NULL){ // dealoc
         fprintf(stderr, "ERROR : in twoOpt : error while allocating tabTour\nAborting...\n");
         abort();
     }

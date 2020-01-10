@@ -21,13 +21,13 @@
 double nearestNeighbourSolver(instance_t *instance, int *tourBuffer){
     unsigned int dim = instance->dimension;
 
-    int *tabTour = (int *) malloc(dim * sizeof(int)); // WHERE TO STORES THE TOURS
+    int *tabTour = (int *) malloc(dim * sizeof(int)); // WHERE TO STORES THE TOURS // dealoc
     if(tabTour == NULL){
         fprintf(stderr, "ERROR : in nearestNeighbourSolver : error while allocating tabTour\nAborting...\n");
         abort();
     }
     int *freeCities = (int *) malloc(dim * sizeof(int)); // TO KNOW WICH CITY HAS ALREADY BEEN SELECTED
-    if(freeCities == NULL){
+    if(freeCities == NULL){ // dealoc
         fprintf(stderr, "ERROR : in nearestNeighbourSolver : error while allocating freeCities\nAborting...\n");
         abort();
     }
@@ -60,27 +60,18 @@ double nearestNeighbourSolver(instance_t *instance, int *tourBuffer){
 /// FREECITIES CONTAINS AT LEAST ONE FREE CITY, unspecified behavious otherwise...
 int findNearestNeighbour(int cityA, int **tabCoord, int *freeCities,  unsigned int size){
     double minDist;
-    int iMinDist;
+    int iMinDist = -1;
 
 
-    if(cityA == 0){
-        minDist = distance(cityA, 1, tabCoord);
-        iMinDist = 1;
-    }
-    else{
-        minDist = distance(cityA, 0, tabCoord);
-        iMinDist = 0;
-    }
     for(int i=0; i<size; i++){
         if( i != cityA && freeCities[i] != 0 ){
             int dist = distance(cityA, i, tabCoord);
-            if(dist < minDist){
+            if(iMinDist == -1 || dist < minDist){
                 iMinDist = i;
                 minDist = dist;
             }
         }
     }
-    freeCities[iMinDist] = 0;
     return iMinDist;
 }
 

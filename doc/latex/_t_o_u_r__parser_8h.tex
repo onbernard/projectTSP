@@ -1,0 +1,110 @@
+\hypertarget{_t_o_u_r__parser_8h}{}\doxysection{include/\+T\+O\+U\+R\+\_\+parser.h File Reference}
+\label{_t_o_u_r__parser_8h}\index{include/TOUR\_parser.h@{include/TOUR\_parser.h}}
+
+
+H\+E\+A\+D\+ER -\/ Parser for a tour file.  
+
+
+{\ttfamily \#include \char`\"{}T\+S\+P\+\_\+parser.\+h\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{_t_o_u_r__parser_8h_a39a034b36e0c7f1f29485229cc2c3065}{parse\+T\+O\+U\+Rfile}} (F\+I\+LE $\ast$fp, \mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} $\ast$instance, \+\_\+\+Bool nz)
+\begin{DoxyCompactList}\small\item\em Parses a tour file, returns the result in an \mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} structure. IT IS V\+E\+RY S\+T\+R\+I\+CT ON T\+HE F\+I\+LE F\+O\+R\+M\+AT. \end{DoxyCompactList}\item 
+\+\_\+\+Bool \mbox{\hyperlink{_t_o_u_r__parser_8h_ad5c1cc69c1131ded169975909352a8c3}{is\+In\+Arr}} (int $\ast$arr, int value, unsigned int size)
+\begin{DoxyCompactList}\small\item\em Returns 1 if value is in array. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_t_o_u_r__parser_8h_a8b653a7ea9ac09364c7441b146eb07f2}{init\+T\+O\+U\+Rinstance}} (\mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} $\ast$instance)
+\begin{DoxyCompactList}\small\item\em Initializes an \mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} structure for a tour file. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_t_o_u_r__parser_8h_a337b85e281c1d23b15a85a7d43decfcc}{print\+T\+O\+U\+Rinstance}} (F\+I\+LE $\ast$fp, \mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} instance)
+\begin{DoxyCompactList}\small\item\em Prints the content of a tour instance in a file given as parameter. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+H\+E\+A\+D\+ER -\/ Parser for a tour file. 
+
+\begin{DoxyAuthor}{Author}
+B\+E\+R\+N\+A\+RD O. 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+december 2019 
+\end{DoxyDate}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_t_o_u_r__parser_8h_a8b653a7ea9ac09364c7441b146eb07f2}\label{_t_o_u_r__parser_8h_a8b653a7ea9ac09364c7441b146eb07f2}} 
+\index{TOUR\_parser.h@{TOUR\_parser.h}!initTOURinstance@{initTOURinstance}}
+\index{initTOURinstance@{initTOURinstance}!TOUR\_parser.h@{TOUR\_parser.h}}
+\doxysubsubsection{\texorpdfstring{initTOURinstance()}{initTOURinstance()}}
+{\footnotesize\ttfamily void init\+T\+O\+U\+Rinstance (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} $\ast$}]{instance }\end{DoxyParamCaption})}
+
+
+
+Initializes an \mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} structure for a tour file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em instance} & \+: A pointer to an \mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} structure\\
+\hline
+\end{DoxyParams}
+Initializes an \mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} structure for a tour file. \mbox{\Hypertarget{_t_o_u_r__parser_8h_ad5c1cc69c1131ded169975909352a8c3}\label{_t_o_u_r__parser_8h_ad5c1cc69c1131ded169975909352a8c3}} 
+\index{TOUR\_parser.h@{TOUR\_parser.h}!isInArr@{isInArr}}
+\index{isInArr@{isInArr}!TOUR\_parser.h@{TOUR\_parser.h}}
+\doxysubsubsection{\texorpdfstring{isInArr()}{isInArr()}}
+{\footnotesize\ttfamily \+\_\+\+Bool is\+In\+Arr (\begin{DoxyParamCaption}\item[{int $\ast$}]{arr,  }\item[{int}]{value,  }\item[{unsigned int}]{size }\end{DoxyParamCaption})}
+
+
+
+Returns 1 if value is in array. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em arr} & \+: An integer array \\
+\hline
+{\em value} & \+: An integer value that will be searched for \\
+\hline
+{\em size} & \+: The size of the array\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 if value is in array, 0 if not
+\end{DoxyReturn}
+Checks if value is in array used in parse\+T\+O\+U\+Rfile to check if every city number is unique \mbox{\Hypertarget{_t_o_u_r__parser_8h_a39a034b36e0c7f1f29485229cc2c3065}\label{_t_o_u_r__parser_8h_a39a034b36e0c7f1f29485229cc2c3065}} 
+\index{TOUR\_parser.h@{TOUR\_parser.h}!parseTOURfile@{parseTOURfile}}
+\index{parseTOURfile@{parseTOURfile}!TOUR\_parser.h@{TOUR\_parser.h}}
+\doxysubsubsection{\texorpdfstring{parseTOURfile()}{parseTOURfile()}}
+{\footnotesize\ttfamily int parse\+T\+O\+U\+Rfile (\begin{DoxyParamCaption}\item[{F\+I\+LE $\ast$}]{fp,  }\item[{\mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} $\ast$}]{instance,  }\item[{\+\_\+\+Bool}]{nz }\end{DoxyParamCaption})}
+
+
+
+Parses a tour file, returns the result in an \mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} structure. IT IS V\+E\+RY S\+T\+R\+I\+CT ON T\+HE F\+I\+LE F\+O\+R\+M\+AT. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fp} & \+: a file pointer to the tour file \\
+\hline
+{\em instance} & \+: buffer to wich the result are written \\
+\hline
+{\em nz} & \+: boolean value \+: 0 if the (0,0) node has to be is added, 0 if not\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a negavive value if an error has occured, 0 otherwise
+\end{DoxyReturn}
+Parses a tour file and stores the results in the \mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} structure pointed by argument instance If nz is 0 then the point (0,0) is automaticly added at the first index It allocates instance-\/$>$tab\+Tour C\+A\+L\+LS A\+B\+O\+RT ON A\+L\+L\+O\+C\+A\+T\+I\+ON E\+R\+R\+O\+RS \mbox{\Hypertarget{_t_o_u_r__parser_8h_a337b85e281c1d23b15a85a7d43decfcc}\label{_t_o_u_r__parser_8h_a337b85e281c1d23b15a85a7d43decfcc}} 
+\index{TOUR\_parser.h@{TOUR\_parser.h}!printTOURinstance@{printTOURinstance}}
+\index{printTOURinstance@{printTOURinstance}!TOUR\_parser.h@{TOUR\_parser.h}}
+\doxysubsubsection{\texorpdfstring{printTOURinstance()}{printTOURinstance()}}
+{\footnotesize\ttfamily void print\+T\+O\+U\+Rinstance (\begin{DoxyParamCaption}\item[{F\+I\+LE $\ast$}]{fp,  }\item[{\mbox{\hyperlink{structinstance__t}{instance\+\_\+t}}}]{instance }\end{DoxyParamCaption})}
+
+
+
+Prints the content of a tour instance in a file given as parameter. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fp} & \+: A file pointer \\
+\hline
+{\em instance} & \+: An \mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} structure\\
+\hline
+\end{DoxyParams}
+Prints the content of a tour instance in a file given as parameter. 

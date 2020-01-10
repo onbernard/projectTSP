@@ -25,7 +25,6 @@ int parseTOURfile(FILE *fp, instance_t *instance, _Bool nz){
         }
         buffer[strcspn(buffer, "\n")] = 0;
         nLine++;
-        printf("%d %s\n", nLine, buffer);
 
         char *firstHalf = strtok(buffer, ":");
         if(firstHalf == NULL){
@@ -85,7 +84,9 @@ int parseTOURfile(FILE *fp, instance_t *instance, _Bool nz){
                 specs_FLAGS += DIMENSION_F;
                 break;
             case COMMENT_F:
-                printf("Comment : %s\n", secondHalf);
+                if(verbose){
+                    fprintf(logfileP, "Comment : %s\n", secondHalf);
+                }
                 break;
             default:
                 fprintf(stderr, "TOUR FILE FORMAT ERROR : unexpected keyword : %s\n", firstHalf);

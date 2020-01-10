@@ -136,7 +136,7 @@ int main(int argc, char **argv){
         if(verbose){
             fprintf(logfileP, "Reading TOUR file...\n");
         }
-        err = parseTOURfile(TOURfileP, &TOURinstance, args.nz);
+        err = parseTOURfile(TOURfileP, &TOURinstance, args.nz); 
         if(err < 0){
             fprintf(logfileP, "ERROR : in main : parseTOURfile error\nContinuing without it...");
             if(TOURinstance.tabTour != NULL){
@@ -189,7 +189,7 @@ int main(int argc, char **argv){
         end = clock();
 
         BFtime = ((double)end-start)/CLOCKS_PER_SEC;
-        fprintf(logfileP, "Brute force method found a tour with length %lf in %f secondes\n", BFlength, BFtime);
+        fprintf(logfileP, "\nBrute force method found a tour with length %lf in %f secondes\n", BFlength, BFtime);
         if(verbose){
             printTour(tourBuffer, ' ', dim);
         }
@@ -204,9 +204,9 @@ int main(int argc, char **argv){
         start = clock();
         BFMlength = bruteForceMatrix(&TSPinstance, tourBuffer);
         end = clock();
-        
+
         BFMtime = ((double)end-start)/CLOCKS_PER_SEC;
-        fprintf(logfileP, "Brute force with matrix method found a tour with length %lf in %f secondes\n", BFMlength, BFMtime);
+        fprintf(logfileP, "\nBrute force with matrix method found a tour with length %lf in %f secondes\n", BFMlength, BFMtime);
         if(verbose){
             printTour(tourBuffer, ' ', dim);
         }
@@ -220,7 +220,7 @@ int main(int argc, char **argv){
         PPVlength = nearestNeighbourSolver(&TSPinstance, tourBuffer);
         end = clock();
         PPVtime = ((double)end-start)/CLOCKS_PER_SEC;
-        fprintf(logfileP, "Nearest neighbour method found a tour with length %lf in %f secondes\n", PPVlength, PPVtime);
+        fprintf(logfileP, "\nNearest neighbour method found a tour with length %lf in %f secondes\n", PPVlength, PPVtime);
         if(verbose){
             printTour(tourBuffer, ' ', dim);
         }
@@ -234,7 +234,7 @@ int main(int argc, char **argv){
         RWlength = randomWalkSolver(&TSPinstance, tourBuffer);
         end = clock();
         RWtime = ((double)end-start)/CLOCKS_PER_SEC;
-        fprintf(logfileP, "Random walk method found a tour with length %lf in %f secondes\n", RWlength, RWtime);
+        fprintf(logfileP, "\nRandom walk method found a tour with length %lf in %f secondes\n", RWlength, RWtime);
         if(verbose){
             printTour(tourBuffer, ' ', dim);
         }
@@ -248,7 +248,7 @@ int main(int argc, char **argv){
         TWOOPTlength = twoOptSolver(&TSPinstance, tourBuffer);
         end = clock();
         TWOOPTtime = ((double)end-start)/CLOCKS_PER_SEC;
-        fprintf(logfileP, "2-opt method found a tour with length %lf in %f secondes\n", TWOOPTlength, TWOOPTtime);
+        fprintf(logfileP, "\n2-opt method found a tour with length %lf in %f secondes\n", TWOOPTlength, TWOOPTtime);
         if(verbose){
             printTour(tourBuffer, ' ', dim);
         }
@@ -262,14 +262,13 @@ int main(int argc, char **argv){
         GAlength = geneticAlgorithmSolver(&TSPinstance, tourBuffer, args.ga_nSpecimens, args.ga_nGenerations, args.ga_mutationRate);
         end = clock();
         GAtime = ((double)end-start)/CLOCKS_PER_SEC;
-        fprintf(logfileP, "Genetic algorithm (nSpe=%d,nGe=%d,muR=%lf) method found a tour with length %lf in %f secondes\n", args.ga_nSpecimens, args.ga_nGenerations, args.ga_mutationRate, GAlength, GAtime);
+        fprintf(logfileP, "\nGenetic algorithm (nSpe=%d,nGe=%d,muR=%lf) method found a tour with length %lf in %f secondes\n", args.ga_nSpecimens, args.ga_nGenerations, args.ga_mutationRate, GAlength, GAtime);
         if(verbose){
             printTour(tourBuffer, ' ', dim);
         }
         printRow(outfileP, TSPinstance.name, "GA", GAlength, GAtime, tourBuffer, dim);
     }
-    
-    
+
     free(tourBuffer);
     for(int i=0; i<dim; i++){
         free(TSPinstance.matDist[i]);

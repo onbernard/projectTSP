@@ -1,0 +1,159 @@
+\hypertarget{two__opt_8c}{}\doxysection{src/two\+\_\+opt.c File Reference}
+\label{two__opt_8c}\index{src/two\_opt.c@{src/two\_opt.c}}
+
+
+H\+E\+A\+D\+ER -\/ Implements the 2-\/opt algorithm to solve a tsp problem.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$float.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}two\+\_\+opt.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}globals.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}T\+S\+P\+\_\+parser.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}random\+\_\+walk.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}brute\+\_\+force.\+h\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{two__opt_8c_aba2efadd1d94eff18b08a446d667b20a}{two\+Opt\+Solver}} (\mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} $\ast$instance, int $\ast$tour\+Buffer)
+\begin{DoxyCompactList}\small\item\em Implements the 2-\/opt algorithm to solve the tsp problem represented by instance. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{two__opt_8c_a04d942f2f94823e51930d3acfe131119}{do\+One\+Decross\+Pass}} (\mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} $\ast$instance, int $\ast$tab\+Tour)
+\begin{DoxyCompactList}\small\item\em Iterates over every segment and following segments and swaps the end values when they crosses. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{two__opt_8c_a88456714479b8207ba297f401dfd651e}{number\+Of\+Crossing}} (\mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} $\ast$instance, int $\ast$tab\+Tour)
+\begin{DoxyCompactList}\small\item\em Prints informations about every crossings in tab\+Tour and returns the number of them. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{two__opt_8c_ac71f3512bf399c79ef5652edfbea4462}{absF}} (double x)
+\begin{DoxyCompactList}\small\item\em Returns the absolute value of a double. Because math.\+h does not have that apparently. \end{DoxyCompactList}\item 
+\+\_\+\+Bool \mbox{\hyperlink{two__opt_8c_a51ff0dc01487dbcf689eeb29914836a8}{is\+Crossing}} (int $\ast$$\ast$tab\+Coord, int A, int B, int C, int D)
+\begin{DoxyCompactList}\small\item\em Returns 1 if segments of city A to city B and city C to city D crosses. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{two__opt_8c_a4f56687b67bf9e1e4903fa4882b4072a}{L}} (double mat\mbox{[}2\mbox{]}\mbox{[}3\mbox{]}, int l1, int l2, double m)
+\begin{DoxyCompactList}\small\item\em Add line l1 times m to line l2 in 2 by 3 dimensionnal double array. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{two__opt_8c_a0ad1f72bba935490cea6c094a3619ceb}{M}} (double mat\mbox{[}2\mbox{]}\mbox{[}3\mbox{]}, int l, double m)
+\begin{DoxyCompactList}\small\item\em Multiply a line l by m. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{two__opt_8c_a41b8a261cfeef8b363ed5cf5eb85ae7b}{P}} (double mat\mbox{[}2\mbox{]}\mbox{[}3\mbox{]}, int l1, int l2)
+\begin{DoxyCompactList}\small\item\em Permutes lines l1 and l2 of mat. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{two__opt_8c_a0584e5cdce3e9da0572d8b2db71330c8}{print\+Syst}} (double mat\mbox{[}2\mbox{]}\mbox{[}3\mbox{]})
+\begin{DoxyCompactList}\small\item\em For debugging purposes, prints a 2$\ast$3 double matrix. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+H\+E\+A\+D\+ER -\/ Implements the 2-\/opt algorithm to solve a tsp problem. 
+
+S\+O\+U\+R\+CE -\/ Implements the 2-\/opt algorithm to solve a tsp problem.
+
+\begin{DoxyAuthor}{Author}
+B\+E\+R\+N\+A\+RD O. 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+december 2019 
+\end{DoxyDate}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{two__opt_8c_ac71f3512bf399c79ef5652edfbea4462}\label{two__opt_8c_ac71f3512bf399c79ef5652edfbea4462}} 
+\index{two\_opt.c@{two\_opt.c}!absF@{absF}}
+\index{absF@{absF}!two\_opt.c@{two\_opt.c}}
+\doxysubsubsection{\texorpdfstring{absF()}{absF()}}
+{\footnotesize\ttfamily double absF (\begin{DoxyParamCaption}\item[{double}]{x }\end{DoxyParamCaption})}
+
+
+
+Returns the absolute value of a double. Because math.\+h does not have that apparently. 
+
+Returns the absolute value of a double. \mbox{\Hypertarget{two__opt_8c_a04d942f2f94823e51930d3acfe131119}\label{two__opt_8c_a04d942f2f94823e51930d3acfe131119}} 
+\index{two\_opt.c@{two\_opt.c}!doOneDecrossPass@{doOneDecrossPass}}
+\index{doOneDecrossPass@{doOneDecrossPass}!two\_opt.c@{two\_opt.c}}
+\doxysubsubsection{\texorpdfstring{doOneDecrossPass()}{doOneDecrossPass()}}
+{\footnotesize\ttfamily int do\+One\+Decross\+Pass (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} $\ast$}]{instance,  }\item[{int $\ast$}]{tab\+Tour }\end{DoxyParamCaption})}
+
+
+
+Iterates over every segment and following segments and swaps the end values when they crosses. 
+
+Takes a tour array and for each segment i, check every segments j after i in the tour that is not connected to i if it crosses i then the end value of i and the start value of j are swapped One decrossing might generates another crossing somewhere else but the function does not check for that in order to not get stuck in an infinite loop \mbox{\Hypertarget{two__opt_8c_a51ff0dc01487dbcf689eeb29914836a8}\label{two__opt_8c_a51ff0dc01487dbcf689eeb29914836a8}} 
+\index{two\_opt.c@{two\_opt.c}!isCrossing@{isCrossing}}
+\index{isCrossing@{isCrossing}!two\_opt.c@{two\_opt.c}}
+\doxysubsubsection{\texorpdfstring{isCrossing()}{isCrossing()}}
+{\footnotesize\ttfamily \+\_\+\+Bool is\+Crossing (\begin{DoxyParamCaption}\item[{int $\ast$$\ast$}]{tab\+Coord,  }\item[{int}]{A,  }\item[{int}]{B,  }\item[{int}]{C,  }\item[{int}]{D }\end{DoxyParamCaption})}
+
+
+
+Returns 1 if segments of city A to city B and city C to city D crosses. 
+
+Returns 1 if segment going from cityA to cityB crosses the segment going grom cityC to cityD Does it by representing AB and CD as a line with parameters t and t\textquotesingle{} such that \begin{DoxyVerb}AB(t) = A(t) + B(1-t)
+CD(t') = C(t') + D(1-t')
+\end{DoxyVerb}
+
+
+Crossing = (t,t\textquotesingle{}) \+:= A\+B(t) = CD(t\textquotesingle{})
+
+If 0 $<$= t $<$= 1 and 0 $<$=t\textquotesingle{} $<$= 1 then the segments crosses
+
+To compute (t,t\textquotesingle{}) it solves the system of equations \+: \begin{DoxyVerb}| Ax-Bx     Dx-Cx | | t |  ---  | Dx-Bx |
+| Ay-By     Dy-Cy | | t'|  ---  | Dy-By |
+\end{DoxyVerb}
+
+
+D\+UE TO N\+U\+M\+E\+R\+I\+C\+AL I\+N\+S\+T\+A\+B\+I\+L\+I\+TY, T\+H\+IS F\+U\+N\+C\+T\+I\+ON IS H\+A\+Z\+A\+R\+D\+O\+US AT B\+E\+ST, U\+SE S\+M\+A\+LL OR S\+I\+M\+I\+L\+AR N\+U\+M\+B\+E\+RS AT Y\+OU O\+WN R\+I\+S\+KS \mbox{\Hypertarget{two__opt_8c_a4f56687b67bf9e1e4903fa4882b4072a}\label{two__opt_8c_a4f56687b67bf9e1e4903fa4882b4072a}} 
+\index{two\_opt.c@{two\_opt.c}!L@{L}}
+\index{L@{L}!two\_opt.c@{two\_opt.c}}
+\doxysubsubsection{\texorpdfstring{L()}{L()}}
+{\footnotesize\ttfamily void L (\begin{DoxyParamCaption}\item[{double}]{mat\mbox{[}2\mbox{]}\mbox{[}3\mbox{]},  }\item[{int}]{l1,  }\item[{int}]{l2,  }\item[{double}]{m }\end{DoxyParamCaption})}
+
+
+
+Add line l1 times m to line l2 in 2 by 3 dimensionnal double array. 
+
+Implements a linear combination of the lines of a matrix L2 $<$--- L2 + L1 $\ast$ m \mbox{\Hypertarget{two__opt_8c_a0ad1f72bba935490cea6c094a3619ceb}\label{two__opt_8c_a0ad1f72bba935490cea6c094a3619ceb}} 
+\index{two\_opt.c@{two\_opt.c}!M@{M}}
+\index{M@{M}!two\_opt.c@{two\_opt.c}}
+\doxysubsubsection{\texorpdfstring{M()}{M()}}
+{\footnotesize\ttfamily void M (\begin{DoxyParamCaption}\item[{double}]{mat\mbox{[}2\mbox{]}\mbox{[}3\mbox{]},  }\item[{int}]{l,  }\item[{double}]{m }\end{DoxyParamCaption})}
+
+
+
+Multiply a line l by m. 
+
+Multiply line l of 2 by 3 dimensionnal double array by m. \mbox{\Hypertarget{two__opt_8c_a88456714479b8207ba297f401dfd651e}\label{two__opt_8c_a88456714479b8207ba297f401dfd651e}} 
+\index{two\_opt.c@{two\_opt.c}!numberOfCrossing@{numberOfCrossing}}
+\index{numberOfCrossing@{numberOfCrossing}!two\_opt.c@{two\_opt.c}}
+\doxysubsubsection{\texorpdfstring{numberOfCrossing()}{numberOfCrossing()}}
+{\footnotesize\ttfamily int number\+Of\+Crossing (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} $\ast$}]{instance,  }\item[{int $\ast$}]{tab\+Tour }\end{DoxyParamCaption})}
+
+
+
+Prints informations about every crossings in tab\+Tour and returns the number of them. 
+
+For debugging purposes Goes through the tour and shouts when a segment intersect another \mbox{\Hypertarget{two__opt_8c_a41b8a261cfeef8b363ed5cf5eb85ae7b}\label{two__opt_8c_a41b8a261cfeef8b363ed5cf5eb85ae7b}} 
+\index{two\_opt.c@{two\_opt.c}!P@{P}}
+\index{P@{P}!two\_opt.c@{two\_opt.c}}
+\doxysubsubsection{\texorpdfstring{P()}{P()}}
+{\footnotesize\ttfamily void P (\begin{DoxyParamCaption}\item[{double}]{mat\mbox{[}2\mbox{]}\mbox{[}3\mbox{]},  }\item[{int}]{l1,  }\item[{int}]{l2 }\end{DoxyParamCaption})}
+
+
+
+Permutes lines l1 and l2 of mat. 
+
+Permutes lines l1 et l2 of 2 by 3 dimensionnal double array. \mbox{\Hypertarget{two__opt_8c_a0584e5cdce3e9da0572d8b2db71330c8}\label{two__opt_8c_a0584e5cdce3e9da0572d8b2db71330c8}} 
+\index{two\_opt.c@{two\_opt.c}!printSyst@{printSyst}}
+\index{printSyst@{printSyst}!two\_opt.c@{two\_opt.c}}
+\doxysubsubsection{\texorpdfstring{printSyst()}{printSyst()}}
+{\footnotesize\ttfamily void print\+Syst (\begin{DoxyParamCaption}\item[{double}]{mat\mbox{[}2\mbox{]}\mbox{[}3\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+For debugging purposes, prints a 2$\ast$3 double matrix. 
+
+Prints a 2 by 3 dimensionnal double array. \mbox{\Hypertarget{two__opt_8c_aba2efadd1d94eff18b08a446d667b20a}\label{two__opt_8c_aba2efadd1d94eff18b08a446d667b20a}} 
+\index{two\_opt.c@{two\_opt.c}!twoOptSolver@{twoOptSolver}}
+\index{twoOptSolver@{twoOptSolver}!two\_opt.c@{two\_opt.c}}
+\doxysubsubsection{\texorpdfstring{twoOptSolver()}{twoOptSolver()}}
+{\footnotesize\ttfamily double two\+Opt\+Solver (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} $\ast$}]{instance,  }\item[{int $\ast$}]{tour\+Buffer }\end{DoxyParamCaption})}
+
+
+
+Implements the 2-\/opt algorithm to solve the tsp problem represented by instance. 
+
+Implements the 2-\/opt algorithm on the tsp problem represented by the \mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} instance structure Makes decross passes on the tour array and stops when either no crossing are left or a thousands passes A decross pass is described in do\+One\+Decross\+Pass documentation. Stores the best found tour in the array pointed by tour\+Buffer and returns its length as a double. C\+A\+L\+LS A\+B\+O\+RT ON A\+L\+L\+O\+C\+A\+T\+I\+ON E\+R\+R\+O\+RS 

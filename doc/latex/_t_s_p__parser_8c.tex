@@ -1,0 +1,90 @@
+\hypertarget{_t_s_p__parser_8c}{}\doxysection{src/\+T\+S\+P\+\_\+parser.c File Reference}
+\label{_t_s_p__parser_8c}\index{src/TSP\_parser.c@{src/TSP\_parser.c}}
+
+
+S\+O\+U\+R\+CE -\/ Parser for a tsp file.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}T\+S\+P\+\_\+parser.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}globals.\+h\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{_t_s_p__parser_8c_aad9305183cea6189e34f34af4df16a15}{parse\+T\+S\+Pfile}} (F\+I\+LE $\ast$fp, \mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} $\ast$instance, \+\_\+\+Bool nz)
+\begin{DoxyCompactList}\small\item\em Parses a tsp file, returns the result in an \mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} structure. IT IS V\+E\+RY S\+T\+R\+I\+CT ON T\+HE F\+I\+LE F\+O\+R\+M\+AT. \end{DoxyCompactList}\item 
+unsigned char \mbox{\hyperlink{_t_s_p__parser_8c_ab799244b335468540c3db387f12ed050}{spec\+Keyword}} (const char str\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Identifies if a string is one of the tsp file keywords. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_t_s_p__parser_8c_a413b6a4094cefe318f5f8b29558f9d46}{init\+T\+S\+Pinstance}} (\mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} $\ast$instance)
+\begin{DoxyCompactList}\small\item\em Initialize the values of an \mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} structure. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_t_s_p__parser_8c_a67a5c19d5a2782a49836a0b9190b88f8}{trim}} (char str\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Removes heading and trailing spaces of a string. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_t_s_p__parser_8c_acce1e7abd137363cfa1df2266136561d}{print\+T\+S\+Pinstance}} (F\+I\+LE $\ast$fp, \mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} instance)
+\begin{DoxyCompactList}\small\item\em Prints the contents of a tsp instance in the file pointed to by fp. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+S\+O\+U\+R\+CE -\/ Parser for a tsp file. 
+
+\begin{DoxyAuthor}{Author}
+B\+E\+R\+N\+A\+RD O. 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+december 2019 
+\end{DoxyDate}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_t_s_p__parser_8c_a413b6a4094cefe318f5f8b29558f9d46}\label{_t_s_p__parser_8c_a413b6a4094cefe318f5f8b29558f9d46}} 
+\index{TSP\_parser.c@{TSP\_parser.c}!initTSPinstance@{initTSPinstance}}
+\index{initTSPinstance@{initTSPinstance}!TSP\_parser.c@{TSP\_parser.c}}
+\doxysubsubsection{\texorpdfstring{initTSPinstance()}{initTSPinstance()}}
+{\footnotesize\ttfamily void init\+T\+S\+Pinstance (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} $\ast$}]{instance }\end{DoxyParamCaption})}
+
+
+
+Initialize the values of an \mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} structure. 
+
+Initializes an \mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} structure Does not allocate anything, just sets all variables to 0 \mbox{\Hypertarget{_t_s_p__parser_8c_aad9305183cea6189e34f34af4df16a15}\label{_t_s_p__parser_8c_aad9305183cea6189e34f34af4df16a15}} 
+\index{TSP\_parser.c@{TSP\_parser.c}!parseTSPfile@{parseTSPfile}}
+\index{parseTSPfile@{parseTSPfile}!TSP\_parser.c@{TSP\_parser.c}}
+\doxysubsubsection{\texorpdfstring{parseTSPfile()}{parseTSPfile()}}
+{\footnotesize\ttfamily int parse\+T\+S\+Pfile (\begin{DoxyParamCaption}\item[{F\+I\+LE $\ast$}]{fp,  }\item[{\mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} $\ast$}]{instance,  }\item[{\+\_\+\+Bool}]{nz }\end{DoxyParamCaption})}
+
+
+
+Parses a tsp file, returns the result in an \mbox{\hyperlink{structinstance__t}{instance\+\_\+t}} structure. IT IS V\+E\+RY S\+T\+R\+I\+CT ON T\+HE F\+I\+LE F\+O\+R\+M\+AT. 
+
+Parses a tsp file. It allocates instance-\/$>$tab\+Tour and the two dimensionnal array instance-\/$>$tab\+Coord C\+A\+L\+LS A\+B\+O\+RT ON A\+L\+L\+O\+C\+A\+T\+I\+ON E\+R\+R\+OR If nz is 0 then a point with coordinates (0,0) is automatically placed on the first index and dimension is incremented by one Right now these are accepted\+: \+::\+: firsthalf \+::\+::\+: second half \+::\+: fzefzeafeza Only E\+U\+C\+\_\+2D edges type and T\+SP file type are accepted Integers must be strictly greater than 0 A city number must be equal to its position \mbox{\Hypertarget{_t_s_p__parser_8c_acce1e7abd137363cfa1df2266136561d}\label{_t_s_p__parser_8c_acce1e7abd137363cfa1df2266136561d}} 
+\index{TSP\_parser.c@{TSP\_parser.c}!printTSPinstance@{printTSPinstance}}
+\index{printTSPinstance@{printTSPinstance}!TSP\_parser.c@{TSP\_parser.c}}
+\doxysubsubsection{\texorpdfstring{printTSPinstance()}{printTSPinstance()}}
+{\footnotesize\ttfamily void print\+T\+S\+Pinstance (\begin{DoxyParamCaption}\item[{F\+I\+LE $\ast$}]{fp,  }\item[{\mbox{\hyperlink{structinstance__t}{instance\+\_\+t}}}]{instance }\end{DoxyParamCaption})}
+
+
+
+Prints the contents of a tsp instance in the file pointed to by fp. 
+
+Prints the content of a tsp instance in a file given as parameter. \mbox{\Hypertarget{_t_s_p__parser_8c_ab799244b335468540c3db387f12ed050}\label{_t_s_p__parser_8c_ab799244b335468540c3db387f12ed050}} 
+\index{TSP\_parser.c@{TSP\_parser.c}!specKeyword@{specKeyword}}
+\index{specKeyword@{specKeyword}!TSP\_parser.c@{TSP\_parser.c}}
+\doxysubsubsection{\texorpdfstring{specKeyword()}{specKeyword()}}
+{\footnotesize\ttfamily unsigned char spec\+Keyword (\begin{DoxyParamCaption}\item[{const char}]{str\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Identifies if a string is one of the tsp file keywords. 
+
+Returns the flag corresponding to a keyword if str matches one If not it returns 0 \mbox{\Hypertarget{_t_s_p__parser_8c_a67a5c19d5a2782a49836a0b9190b88f8}\label{_t_s_p__parser_8c_a67a5c19d5a2782a49836a0b9190b88f8}} 
+\index{TSP\_parser.c@{TSP\_parser.c}!trim@{trim}}
+\index{trim@{trim}!TSP\_parser.c@{TSP\_parser.c}}
+\doxysubsubsection{\texorpdfstring{trim()}{trim()}}
+{\footnotesize\ttfamily void trim (\begin{DoxyParamCaption}\item[{char}]{str\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Removes heading and trailing spaces of a string. 
+
+Transforms a string like this\+: -\/$>$$\vert$ fs qf 0$\vert$$<$-\/ into this\+: -\/$>$$\vert$fs qf0000000$\vert$$<$-\/ 
